@@ -1,16 +1,20 @@
 package com.example.pet_track;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.pet_track.api.ApiClient;
-import com.example.pet_track.api.ApiService;
+import com.bumptech.glide.Glide;
+
+import com.example.pet_track.ui.login.LoginActivity;
+import com.example.pet_track.viewmodel.UserViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,10 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pet_track.databinding.ActivityMainBinding;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -32,10 +32,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
@@ -57,27 +53,35 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-//        ApiService service = ApiClient.getClient().create(ApiService.class);
-//        service.ping().enqueue(new Callback<String>() {
-//            @Override
-//            public void onResponse(Call<String> call, Response<String> response) {
-//                if (response.isSuccessful()) {
-//                    Log.d("API", "Response: " + response.body());
-//
-//                    runOnUiThread(() ->
-//                            Toast.makeText(MainActivity.this, "API: " + response.body(), Toast.LENGTH_SHORT).show()
-//                    );
-//                } else {
-//                    Log.e("API", "Failed: " + response.code());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<String> call, Throwable t) {
-//                Log.e("API", "Failure", t);
-//                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Fail: " + t.getMessage(), Toast.LENGTH_LONG).show());
-//            }
-//        });
+        // MVVM: Use UserViewModel to observe user info
+        View headerView = navigationView.getHeaderView(0);
+        ImageView avatar = headerView.findViewById(R.id.imageViewAvatar);
+        TextView name = headerView.findViewById(R.id.textViewName);
+        TextView email = headerView.findViewById(R.id.textViewEmail);
+        UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel.getFullName().observe(this, name::setText);
+        userViewModel.getEmail().observe(this, email::setText);
+        userViewModel.getAvatarUrl().observe(this, url -> {
+            if (url != null && !url.isEmpty()) {
+                Glide.with(this).load(url).placeholder(R.mipmap.ic_launcher_round).into(avatar);
+            } else {
+                avatar.setImageResource(R.mipmap.ic_launcher_round);
+            }
+        });
+
+        // Handle logout
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_logout) {
+                userViewModel.clearUserInfo();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            // Default navigation handling
+            return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+        });
     }
 
     @Override

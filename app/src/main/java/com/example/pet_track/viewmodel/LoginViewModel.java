@@ -1,24 +1,19 @@
-package com.example.pet_track.ui.login;
+package com.example.pet_track.viewmodel;
 
 import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.pet_track.api.ApiService;
 import com.example.pet_track.api.ApiServiceBuilder;
 import com.example.pet_track.models.request.LoginRequest;
 import com.example.pet_track.models.response.LoginResponse;
 import com.example.pet_track.models.response.WrapResponse;
-
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginViewModel extends ViewModel {
-
     private final MutableLiveData<LoginResponse> loginResult = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
@@ -51,3 +46,4 @@ public class LoginViewModel extends ViewModel {
         });
     }
 }
+
