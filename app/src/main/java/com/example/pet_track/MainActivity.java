@@ -1,9 +1,13 @@
 package com.example.pet_track;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
+import com.example.pet_track.api.ApiClient;
+import com.example.pet_track.api.ApiService;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -15,6 +19,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pet_track.databinding.ActivityMainBinding;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +56,28 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+//        ApiService service = ApiClient.getClient().create(ApiService.class);
+//        service.ping().enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                if (response.isSuccessful()) {
+//                    Log.d("API", "Response: " + response.body());
+//
+//                    runOnUiThread(() ->
+//                            Toast.makeText(MainActivity.this, "API: " + response.body(), Toast.LENGTH_SHORT).show()
+//                    );
+//                } else {
+//                    Log.e("API", "Failed: " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                Log.e("API", "Failure", t);
+//                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Fail: " + t.getMessage(), Toast.LENGTH_LONG).show());
+//            }
+//        });
     }
 
     @Override
