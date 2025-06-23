@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pet_track.viewmodel.RegisterViewModel;
 import com.example.pet_track.R;
 import com.example.pet_track.models.request.RegisterRequest;
 import com.example.pet_track.ui.login.LoginActivity;
