@@ -8,7 +8,9 @@ import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.RegisterResponse;
 import com.example.pet_track.models.response.WrapResponse;
 import com.example.pet_track.models.response.wallet.WalletResponse;
+import com.example.pet_track.models.response.ClinicResponse;
 
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -31,4 +33,6 @@ public interface ApiService {
             @Query("userId") String userId,
             @Query("status") String status
     );
+    @GET("api/public/clinics/approved")
+    Call<WrapResponse<List<ClinicResponse>>> getApprovedClinics();
 }

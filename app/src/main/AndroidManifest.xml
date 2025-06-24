@@ -38,6 +38,32 @@
             android:name=".MainActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".ui.booking.ClinicListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.booking.ClinicDetailsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="pettrack.com"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.booking.BookingPage"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.booking.CreateBookingActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
