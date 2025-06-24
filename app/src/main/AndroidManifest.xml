@@ -31,7 +31,9 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true" />
-
+        <activity
+            android:name=".ui.wallet.WalletActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
