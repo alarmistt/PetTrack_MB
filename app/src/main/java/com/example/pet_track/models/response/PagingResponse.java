@@ -1,20 +1,31 @@
 package com.example.pet_track.models.response;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class PagingResponse<T> {
-    public List<T> Items ;
-    public int pageNumber ;
-    public int totalPages;
-    public int totalCount ;
-    public int pageSize ;
+    @SerializedName("items")
+    private List<T> items;
 
+    @SerializedName("pageNumber")
+    private int pageNumber;
+
+    @SerializedName("totalPages")
+    private int totalPages;
+
+    @SerializedName("totalCount")
+    private int totalCount;
+
+    @SerializedName("pageSize")
+    private int pageSize;
+
+    // Getters and Setters
     public List<T> getItems() {
-        return Items;
+        return items;
     }
 
     public void setItems(List<T> items) {
-        Items = items;
+        this.items = items;
     }
 
     public int getPageNumber() {
