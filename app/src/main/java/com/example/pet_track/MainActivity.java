@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.example.pet_track.ui.login.LoginActivity;
+import com.example.pet_track.ui.wallet.WalletActivity;
 import com.example.pet_track.viewmodel.UserViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -78,12 +79,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            } else if (item.getItemId() == R.id.nav_wallet) {
+                Intent intent = new Intent(this, WalletActivity.class);
+                startActivity(intent);
+                return true;
             }
             // Default navigation handling
             return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
