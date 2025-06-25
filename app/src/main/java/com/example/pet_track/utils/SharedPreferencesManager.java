@@ -45,6 +45,21 @@ public class SharedPreferencesManager {
                 .apply();
     }
 
+    public UserResponse getUserInfo() {
+        return new UserResponse(
+                getUserId(),
+                getEmail(),
+                getFullName(),
+                getPhoneNumber(),
+                getRole(),
+                getAvatarUrl()
+        );
+    }
+
+    public boolean isLoggedIn() {
+        return getToken() != null && getUserId() != null;
+    }
+
     public String getUserId() {
         return preferences.getString("userId", null);
     }

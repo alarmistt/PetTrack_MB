@@ -1,6 +1,9 @@
 package com.example.pet_track.models.response;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginResponse {
+    @SerializedName("token")
     private String accessToken;  // JWT Token trả về từ API
     private UserResponse userResponse;  // Thông tin người dùng
 

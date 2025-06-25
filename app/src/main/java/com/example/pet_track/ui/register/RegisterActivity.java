@@ -2,6 +2,7 @@ package com.example.pet_track.ui.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,8 +49,11 @@ public class RegisterActivity extends AppCompatActivity {
         EditText edtConfirmPassword = findViewById(R.id.editTextTextPassword2);
         Button btnSignUp = findViewById(R.id.button);
         TextView tvLogin = findViewById(R.id.textView10);
+        TextView errorMessageTextView = findViewById(R.id.errorMessageTextView);
 
         btnSignUp.setOnClickListener(v -> {
+            errorMessageTextView.setVisibility(View.GONE);
+
             String fullName = edtFullName.getText().toString().trim();
             String email = edtEmail.getText().toString().trim();
             String address = edtAddress.getText().toString().trim();
@@ -57,16 +61,37 @@ public class RegisterActivity extends AppCompatActivity {
             String password = edtPassword.getText().toString();
             String confirmPassword = edtConfirmPassword.getText().toString();
 
-            // Simple validation
-            if (fullName.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            // Validate form
+            if (fullName.isEmpty()) {
+                showError(errorMessageTextView, "Vui lòng nhập họ tên");
+                return;
+            }
+            if (email.isEmpty()) {
+                showError(errorMessageTextView, "Vui lòng nhập email");
+                return;
+            }
+            if (address.isEmpty()) {
+                showError(errorMessageTextView, "Vui lòng nhập địa chỉ");
+                return;
+            }
+            if (phone.isEmpty()) {
+                showError(errorMessageTextView, "Vui lòng nhập số điện thoại");
+                return;
+            }
+            if (password.isEmpty()) {
+                showError(errorMessageTextView, "Vui lòng nhập mật khẩu");
+                return;
+            }
+            if (confirmPassword.isEmpty()) {
+                showError(errorMessageTextView, "Vui lòng xác nhận mật khẩu");
                 return;
             }
             if (!password.equals(confirmPassword)) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                showError(errorMessageTextView, "Mật khẩu không khớp");
                 return;
             }
 
+            // Nếu hợp lệ
             RegisterRequest request = new RegisterRequest(fullName, email, password, confirmPassword, address, phone);
             registerViewModel.register(this, request);
         });
@@ -77,6 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         registerViewModel.getRegisterResult().observe(this, registerResponse -> {
+            errorMessageTextView.setVisibility(View.GONE);
             Toast.makeText(this, "Registration successful! ID: " + registerResponse.getId(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -84,7 +110,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         registerViewModel.getErrorMessage().observe(this, error -> {
-            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            showError(errorMessageTextView, error); // Show lỗi từ API
         });
+    }
+
+    private void showError(TextView errorView, String message) {
+        errorView.setText(message);
+        errorView.setVisibility(View.VISIBLE);
     }
 }
