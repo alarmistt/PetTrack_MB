@@ -3,6 +3,7 @@ package com.example.pet_track.ui.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
-    private TextView registerTextView;
+    private TextView registerTextView, errorMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.buttonLogin);
         registerTextView = findViewById(R.id.textView10);
+        errorMessageTextView = findViewById(R.id.errorMessageTextView);
+
 
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
@@ -64,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             prefs.saveToken(response.getAccessToken());
             prefs.saveUserInfo(response.getUserResponse());
 
+            errorMessageTextView.setVisibility(View.GONE);
 
             Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -71,8 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginViewModel.getErrorMessage().observe(this, error -> {
-            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-            Log.d("LoginActivity", "Login error: " + error);
+            if (error != null) {
+                errorMessageTextView.setText(error); // Set the error message into the TextView
+                errorMessageTextView.setVisibility(View.VISIBLE); // Show the error message
+            }
         });
 
         registerTextView.setOnClickListener(v -> {

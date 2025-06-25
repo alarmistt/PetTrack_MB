@@ -22,4 +22,15 @@
         android:name="com.example.pet_track.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.example.pet_track.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="clinicId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 </navigation>

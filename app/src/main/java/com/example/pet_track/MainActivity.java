@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -88,7 +89,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_chat_icon, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_chat) {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            Bundle args = new Bundle();
+            args.putString("clinicId", "5f8dc6e7d9674788ac4a00c653388917"); // đang hard code clinicId, cần lấy từ dữ liệu người dùng mới đúng
+            navController.navigate(R.id.nav_chat, args);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
