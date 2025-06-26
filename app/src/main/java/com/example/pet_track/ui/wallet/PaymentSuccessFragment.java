@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.example.pet_track.R;
 import com.example.pet_track.api.ApiClient;
 import com.example.pet_track.api.ApiService;
+import com.example.pet_track.models.response.PagingNotiResponse;
 import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.WrapResponse;
 import com.example.pet_track.ui.booking.BookingActivity;
+import com.example.pet_track.ui.booking.BookingPage;
 import com.example.pet_track.utils.SharedPreferencesManager;
 
 import retrofit2.Call;
@@ -47,7 +49,7 @@ public class PaymentSuccessFragment extends Fragment {
         checkTransactionStatus();
 
         btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), BookingActivity.class);
+            Intent intent = new Intent(requireContext(), BookingPage.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
@@ -64,9 +66,9 @@ public class PaymentSuccessFragment extends Fragment {
         }
 
         ApiService apiService = ApiClient.getAuthenticatedClient(token).create(ApiService.class);
-        apiService.checkStatusTransaction(orderCode).enqueue(new Callback<WrapResponse<PagingResponse<String>>>() {
+        apiService.checkStatusTransaction(orderCode).enqueue(new Callback<WrapResponse<PagingNotiResponse>>() {
             @Override
-            public void onResponse(Call<WrapResponse<PagingResponse<String>>> call, Response<WrapResponse<PagingResponse<String>>> response) {
+            public void onResponse(Call<WrapResponse<PagingNotiResponse>> call, Response<WrapResponse<PagingNotiResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d(TAG, "Check status success: " + response.body().getData().getItems());
                     Toast.makeText(getContext(), "Đã kiểm tra trạng thái giao dịch thành công.", Toast.LENGTH_SHORT).show();
@@ -77,7 +79,7 @@ public class PaymentSuccessFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<WrapResponse<PagingResponse<String>>> call, Throwable t) {
+            public void onFailure(Call<WrapResponse<PagingNotiResponse>> call, Throwable t) {
                 Log.e(TAG, "Check status API call failed", t);
                 Toast.makeText(getContext(), "Gọi API thất bại.", Toast.LENGTH_SHORT).show();
             }

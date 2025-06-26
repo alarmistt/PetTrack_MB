@@ -1,6 +1,7 @@
 package com.example.pet_track.ui.booking;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +23,9 @@ import java.io.IOException;
 import com.example.pet_track.api.ApiClient;
 import com.example.pet_track.api.ApiService;
 import com.example.pet_track.models.request.BookingRequest;
+import com.example.pet_track.models.response.BookingResponse;
 import com.example.pet_track.models.response.WrapResponse;
+import com.example.pet_track.ui.wallet.BookingPaymentFragment;
 import com.example.pet_track.utils.SharedPreferencesManager;
 
 public class PaymentBookingActivity extends AppCompatActivity {
@@ -100,13 +103,23 @@ public class PaymentBookingActivity extends AppCompatActivity {
 
             // Call API
             ApiService apiService = ApiClient.getAuthenticatedClient(token).create(ApiService.class);
-            apiService.createBooking(request).enqueue(new Callback<WrapResponse<Object>>() {
+            apiService.createBooking(request).enqueue(new Callback<WrapResponse<BookingResponse>>() {
                 @Override
-                public void onResponse(Call<WrapResponse<Object>> call, Response<WrapResponse<Object>> response) {
+                public void onResponse(Call<WrapResponse<BookingResponse>> call, Response<WrapResponse<BookingResponse>> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Toast.makeText(PaymentBookingActivity.this, "Đặt lịch thành công!", Toast.LENGTH_SHORT).show();
-                        // You might want to navigate to a success screen or booking history
-                        finish(); // Close the payment screen
+                        BookingResponse booking = response.body().getData();
+                        String bookingId = booking.getId(); // ID này trả về từ server
+                        int priceInt = (int) servicePrice;
+
+                        // Ẩn layout cũ để hiện fragment WebView
+                        findViewById(R.id.payment_fragment_container).setVisibility(View.VISIBLE);
+
+                        BookingPaymentFragment paymentFragment = BookingPaymentFragment.newInstance(bookingId, priceInt);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.payment_fragment_container, paymentFragment)
+                                .addToBackStack(null)
+                                .commit();
                     } else {
                         String errorMessage = "Đặt lịch thất bại.";
                         if (response.errorBody() != null) {
@@ -115,15 +128,18 @@ public class PaymentBookingActivity extends AppCompatActivity {
                                 Log.e("BookingAPI", "Lỗi đặt lịch: " + response.code() + " - " + errorBodyStr);
                                 errorMessage += " Mã lỗi: " + response.code();
                             } catch (IOException e) {
-                                Log.e("BookingAPI", "Lỗi đọc error body", e);
+                                Log.e("BookingAPI", "Lỗi đọc errorBody", e);
                             }
+                        } else {
+                            Log.e("BookingAPI", "response.errorBody() == null, code: " + response.code());
                         }
                         Toast.makeText(PaymentBookingActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
                 }
 
+
                 @Override
-                public void onFailure(Call<WrapResponse<Object>> call, Throwable t) {
+                public void onFailure(Call<WrapResponse<BookingResponse>> call, Throwable t) {
                     Log.e("BookingAPI", "Lỗi kết nối API", t);
                     Toast.makeText(PaymentBookingActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
