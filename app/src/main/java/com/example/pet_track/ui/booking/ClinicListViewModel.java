@@ -22,7 +22,7 @@ public class ClinicListViewModel extends ViewModel {
     private final ApiService apiService;
 
     public ClinicListViewModel() {
-        apiService = ApiClient.getClient().create(ApiService.class);
+        apiService = ApiClient.getAnonymousClient().create(ApiService.class);
         fetchClinics();
     }
 

@@ -7,12 +7,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
 
-    <include
-        android:id="@+id/header_layout_main"
-        layout="@layout/header_booking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_content_main"
@@ -20,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/footer_layout_main"
-        android:layout_below="@id/header_layout_main"
         app:defaultNavHost="true"
         app:navGraph="@navigation/mobile_navigation" />
 
