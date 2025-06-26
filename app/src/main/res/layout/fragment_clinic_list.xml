@@ -3,11 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- ✅ Chỉ 1 View duy nhất bên trong ScrollView -->
     <LinearLayout
         android:id="@+id/clinics_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp" />
+        android:padding="16dp">
+
+        <!-- ✅ Include header_booking vào đây -->
+        <include layout="@layout/header_booking" />
+
+        <LinearLayout
+            android:id="@+id/clinic_list_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </LinearLayout>
 
 </ScrollView> 

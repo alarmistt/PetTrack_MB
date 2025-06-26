@@ -26,7 +26,7 @@ public class WalletViewModel extends ViewModel {
     }
 
     public void fetchWallet(String token) {
-        ApiService apiService = ApiClient.buildUnsafeRetrofitWithToken(token).create(ApiService.class);
+        ApiService apiService = ApiClient.getAuthenticatedClient(token).create(ApiService.class);
         apiService.myWallet().enqueue(new Callback<WalletResponse>() {
             @Override
             public void onResponse(Call<WalletResponse> call, Response<WalletResponse> response) {

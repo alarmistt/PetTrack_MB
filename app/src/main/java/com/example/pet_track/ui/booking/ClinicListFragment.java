@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pet_track.R;
 import com.example.pet_track.models.response.ClinicResponse;
+import com.example.pet_track.utils.SharedPreferencesManager;
 
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class ClinicListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_clinic_list, container, false);
 
         clinicsContainer = rootView.findViewById(R.id.clinics_container);
+
+        // Lấy TextView từ header_booking.xml đã include sẵn
+        TextView tvHello = rootView.findViewById(R.id.tv_hello);
+        String fullName = SharedPreferencesManager.getInstance(requireContext()).getFullName();
+        tvHello.setText("Xin chào, " + fullName);
 
         clinicListViewModel = new ViewModelProvider(this).get(ClinicListViewModel.class);
 
@@ -48,7 +54,10 @@ public class ClinicListFragment extends Fragment {
 
     private void displayClinics(List<ClinicResponse> clinics) {
         if (getContext() == null) return;
-        clinicsContainer.removeAllViews();
+
+        LinearLayout listHolder = clinicsContainer.findViewById(R.id.clinic_list_holder);
+        listHolder.removeAllViews(); // ✅ chỉ xoá phần list
+
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         for (ClinicResponse clinic : clinics) {

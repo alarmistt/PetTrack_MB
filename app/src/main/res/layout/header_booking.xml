@@ -2,188 +2,178 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
-    android:padding="20dp"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
 
-    <!-- Header with Back Button -->
+    <!-- Header Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="16dp">
 
-
-
-        <!-- Title -->
         <TextView
+            android:id="@+id/tv_hello"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Xin Chào"
-            android:textSize="24sp"
+            android:text="Xin chào"
+            android:textSize="22sp"
+            android:textColor="#222222"
             android:textStyle="bold"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:layout_gravity="center_vertical" />
+            android:fontFamily="sans-serif-medium" />
 
-        <!-- Profile Icon -->
         <ImageView
             android:id="@+id/icon_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_profile"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="8dp" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:contentDescription="Profile icon" />
     </LinearLayout>
 
-
-    <!-- Icon Buttons Row -->
+    <!-- Quick Actions Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="24dp">
 
-        <!-- Home Button -->
+        <!-- Icon Button Template -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
+            android:padding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp">
+            android:background="?attr/selectableItemBackgroundBorderless">
 
             <ImageView
                 android:id="@+id/icon_home"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_home"/>
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_home" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hồ sơ"
-                android:textSize="16sp"
-                android:textColor="#999999"
-                android:layout_marginTop="8dp"
-                android:gravity="center" />
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="6dp" />
         </LinearLayout>
 
-        <!-- Hospital Button -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
+            android:padding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp">
+            android:background="?attr/selectableItemBackgroundBorderless">
 
             <ImageView
                 android:id="@+id/icon_calendar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:src="@drawable/ic_paw" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Phòng khám"
-                android:textSize="16sp"
-                android:textColor="#999999"
-                android:layout_marginTop="8dp"
-                android:gravity="center" />
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="6dp" />
         </LinearLayout>
 
-        <!-- Services Button -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
+            android:padding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp">
+            android:background="?attr/selectableItemBackgroundBorderless">
 
             <ImageView
                 android:id="@+id/icon_chat"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_services"/>
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_services" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dịch vụ"
-                android:textSize="16sp"
-                android:textColor="#999999"
-                android:layout_marginTop="8dp"
-                android:gravity="center" />
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="6dp" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Search Bar Row -->
+    <!-- Search Section -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <!-- Search Input -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/search_background"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:layout_marginEnd="15dp">
+            android:background="@drawable/bg_search_field"
+            android:paddingHorizontal="16dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_search"
-                android:layout_marginEnd="15dp" />
+                app:tint="#666666"
+                android:layout_marginEnd="12dp" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Tìm kiếm"
-                android:textColorHint="#999999"
-                android:textSize="16sp"
+                android:textColorHint="#666666"
+                android:textColor="#222222"
+                android:textSize="15sp"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:imeOptions="actionSearch" />
         </LinearLayout>
 
-        <!-- Filter Button -->
         <FrameLayout
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_search_field"
             android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_filter" />
+                android:src="@drawable/ic_filter"
+                app:tint="#666666" />
         </FrameLayout>
     </LinearLayout>
-</LinearLayout> 
+</LinearLayout>
