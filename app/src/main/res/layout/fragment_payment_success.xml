@@ -1,23 +1,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="32dp">
 
+    <!-- Icon thành công -->
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_success"
+    android:contentDescription="Success Icon"
+    android:layout_marginBottom="24dp" />
+
+    <!-- Tiêu đề -->
     <TextView
         android:id="@+id/tvSuccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thanh toán thành công!"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="#4CAF50"
-        android:layout_marginBottom="20dp" />
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/btnBackToWallet"
+    <!-- Mô tả -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quay về trang đặt lịch" />
+        android:text="Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi."
+        android:textSize="16sp"
+        android:textColor="#555555"
+        android:layout_marginBottom="32dp"
+        android:textAlignment="center" />
+
+    <!-- Nút quay lại -->
+    <Button
+        android:id="@+id/btnBackToWallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quay về trang chủ"
+        android:textAllCaps="false"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="12dp" />
+
 </LinearLayout>
