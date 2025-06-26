@@ -21,7 +21,7 @@
         android:name="com.example.pet_track.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
-  
+
     <fragment
         android:id="@+id/nav_chat"
         android:name="com.example.pet_track.ui.chat.ChatFragment"
@@ -38,4 +38,19 @@
         android:name="com.example.pet_track.ui.home.BookingHistoryFragment"
         android:label="Lịch sử đặt lịch"
         tools:layout="@layout/activity_history" />
+
+    <fragment
+        android:id="@+id/nav_test_booking_payment"
+        android:name="com.example.pet_track.ui.wallet.TestBookingPaymentFragment"
+        android:label="Test Booking Payment" />
+    <fragment
+        android:id="@+id/bookingPaymentFragment"
+        android:name="com.example.pet_track.ui.wallet.BookingPaymentFragment"
+        android:label="Thanh toán Booking"
+        tools:layout="@layout/fragment_booking_payment" />
+    <!-- res/navigation/nav_graph.xml -->
+    <fragment
+        android:id="@+id/nav_wallet"
+        android:name="com.example.pet_track.ui.wallet.WalletFragment"
+        android:label="Wallet" />
 </navigation>
