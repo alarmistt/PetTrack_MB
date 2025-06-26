@@ -50,7 +50,18 @@ public class BookingViewModel extends ViewModel {
             @Override
             public void onResponse(Call<WrapResponse<List<Slot>>> call, Response<WrapResponse<List<Slot>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    slots.postValue(response.body().getData());
+                    List<Slot> allSlots = response.body().getData();
+                    if (allSlots != null) {
+                        List<Slot> activeSlots = new java.util.ArrayList<>();
+                        for (Slot slot : allSlots) {
+                            if (slot.getStatus() != null && slot.getStatus().equalsIgnoreCase("Active")) {
+                                activeSlots.add(slot);
+                            }
+                        }
+                        slots.postValue(activeSlots);
+                    } else {
+                        slots.postValue(null);
+                    }
                 } else {
                     errorMessage.postValue("Failed to get slots: " + response.message());
                 }
