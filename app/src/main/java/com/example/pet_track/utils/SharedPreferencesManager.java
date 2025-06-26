@@ -21,7 +21,13 @@ public class SharedPreferencesManager {
         }
         return instance;
     }
+    public void putString(String key, String value) {
+        preferences.edit().putString(key, value).apply();
+    }
 
+    public String getString(String key, String defaultValue) {
+        return preferences.getString(key, defaultValue);
+    }
     public void saveToken(String token) {
         preferences.edit().putString(KEY_TOKEN, token).apply();
     }

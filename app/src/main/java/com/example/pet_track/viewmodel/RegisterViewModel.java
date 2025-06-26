@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.pet_track.api.ApiClient;
 import com.example.pet_track.api.ApiService;
+import com.example.pet_track.api.ApiServiceBuilder;
 import com.example.pet_track.models.request.RegisterRequest;
 import com.example.pet_track.models.response.RegisterResponse;
 import com.example.pet_track.models.response.WrapResponse;
@@ -34,9 +35,9 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void register(Context context, RegisterRequest request) {
-        ApiService apiService  = ApiClient.getAnonymousClient().create(ApiService.class);
+        ApiService api = ApiClient.getAnonymousClient().create(ApiService.class);
 
-        apiService .register(request).enqueue(new Callback<WrapResponse<RegisterResponse>>() {
+        api .register(request).enqueue(new Callback<WrapResponse<RegisterResponse>>() {
             @Override
             public void onResponse(Call<WrapResponse<RegisterResponse>> call, Response<WrapResponse<RegisterResponse>> response) {
                 if (response.isSuccessful()) {

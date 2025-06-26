@@ -2,29 +2,30 @@ package com.example.pet_track;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
-import com.example.pet_track.ui.login.LoginActivity;
-import com.example.pet_track.ui.wallet.WalletActivity;
-import com.example.pet_track.viewmodel.UserViewModel;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.pet_track.databinding.ActivityMainBinding;
+import com.example.pet_track.ui.login.LoginActivity;
+import com.example.pet_track.ui.wallet.WalletFragment;
+import com.example.pet_track.viewmodel.UserViewModel;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,37 +35,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        binding.appBarMain.fab.setOnClickListener(view ->
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
-                        .setAnchorView(R.id.fab).show();
-            }
-        });
+                        .setAnchorView(R.id.fab).show());
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
+        // ✅ Thêm tất cả fragment ở đây để ActionBar hoạt động chính xác
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_booking_history )
-                .setOpenableLayout(drawer)
-                .build();
-        
-        // Correct way to get NavController from NavHostFragment
-        androidx.navigation.fragment.NavHostFragment navHostFragment = (androidx.navigation.fragment.NavHostFragment) getSupportFragmentManager()
+                R.id.nav_home,
+                R.id.nav_gallery,
+                R.id.nav_slideshow,
+                R.id.nav_wallet,
+                R.id.nav_booking_history,
+                R.id.nav_test_booking_payment // 🔥 bạn vừa thêm cái này
+        ).setOpenableLayout(drawer).build();
+
+        // Lấy NavController từ NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_content_main);
         NavController navController = navHostFragment.getNavController();
 
+        // Gắn toolbar và drawer với NavController
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // MVVM: Use UserViewModel to observe user info
+        // Load user info lên menu trái
         View headerView = navigationView.getHeaderView(0);
         ImageView avatar = headerView.findViewById(R.id.imageViewAvatar);
         TextView name = headerView.findViewById(R.id.textViewName);
         TextView email = headerView.findViewById(R.id.textViewEmail);
+
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getFullName().observe(this, name::setText);
         userViewModel.getEmail().observe(this, email::setText);
@@ -76,9 +85,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Handle logout
+        // ✅ Navigation Drawer item listener
         navigationView.setNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_logout) {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_logout) {
                 userViewModel.clearUserInfo();
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.nav_wallet) {
-                Intent intent = new Intent(this, WalletActivity.class);
+                Intent intent = new Intent(this, WalletFragment.class);
                 startActivity(intent);
                 return true;
             }else if (item.getItemId() == R.id.profile) {
@@ -94,10 +104,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }
-            // Default navigation handling
-            return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+
+            // ✅ Mặc định điều hướng cho các fragment còn lại
+            boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
+            if (handled) drawer.closeDrawers();
+            return handled;
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -121,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 }

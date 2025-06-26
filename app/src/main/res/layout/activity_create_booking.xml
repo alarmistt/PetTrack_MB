@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -69,75 +70,15 @@
         android:textSize="16sp"
         android:layout_marginTop="16dp"/>
 
-    <LinearLayout
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/time_slot_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:columnCount="4"
         android:layout_marginTop="8dp">
 
-        <Button
-            android:id="@+id/btn09"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="09:00"/>
-
-        <Button
-            android:id="@+id/btn10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="10:00"/>
-
-        <Button
-            android:id="@+id/btn11"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="11:00"/>
-
-        <Button
-            android:id="@+id/btn12"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="12:00"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-
-        <Button
-            android:id="@+id/btn13"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="13:00"/>
-
-        <Button
-            android:id="@+id/btn14"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="14:00"/>
-
-        <Button
-            android:id="@+id/btn15"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="15:00"/>
-
-        <Button
-            android:id="@+id/btn16"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="16:00"/>
-    </LinearLayout>
+    </androidx.gridlayout.widget.GridLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -152,24 +93,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radioMoiSinh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gói môi sinh - 299.000 VND"/>
-
-        <RadioButton
-            android:id="@+id/radioTrungThanh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gói trung thành - 359.000 VND"/>
-
-        <RadioButton
-            android:id="@+id/radioTongQuat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gói tổng quát - 499.000 VND"
-            android:checked="true"/>
     </RadioGroup>
 
     <TextView
