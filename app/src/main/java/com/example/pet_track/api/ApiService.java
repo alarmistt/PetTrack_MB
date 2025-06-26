@@ -3,10 +3,12 @@ package com.example.pet_track.api;
 import com.example.pet_track.models.request.CreateLinkBookingRequest;
 import com.example.pet_track.models.request.LoginRequest;
 import com.example.pet_track.models.request.RegisterRequest;
+import com.example.pet_track.models.request.BookingRequest;
 import com.example.pet_track.models.response.BookingHistoryResponse;
 import com.example.pet_track.models.response.LoginResponse;
 import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.RegisterResponse;
+import com.example.pet_track.models.response.Slot;
 import com.example.pet_track.models.response.WrapResponse;
 import com.example.pet_track.models.request.CreatePaymentRequest;
 import com.example.pet_track.models.response.payment.CreatePaymentResult;
@@ -20,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -52,4 +55,16 @@ public interface ApiService {
     Call<WrapResponse<List<ClinicResponse>>> getApprovedClinics();
     @POST("api/Payment/create-payment-intent")
     Call<WrapResponse<PaymentResponse>> createPaymentIntent(@Body CreatePaymentRequest createPaymentRequest);
+
+    @GET("api/Slot/check-slot")
+    Call<WrapResponse<List<Slot>>> getAvailableSlots(
+            @Query("clinicId") String clinicId,
+            @Query("apointmentDate") String appointmentDate
+    );
+
+    @GET("api/public/clinics/{clinicId}")
+    Call<WrapResponse<ClinicResponse>> getClinicDetails(@Path("clinicId") String clinicId);
+
+    @POST("api/Booking")
+    Call<WrapResponse<Object>> createBooking(@Body BookingRequest request);
 }

@@ -1,5 +1,7 @@
 package com.example.pet_track.models.response;
 
+import com.example.pet_track.models.response.ServicePackage;
+
 import java.util.List;
 
 public class ClinicResponse {
@@ -33,16 +35,5 @@ public class ClinicResponse {
         public int getDayOfWeek() { return dayOfWeek; }
         public String getOpenTime() { return openTime; }
         public String getCloseTime() { return closeTime; }
-    }
-
-    public static class ServicePackage {
-        private String id;
-        private String name;
-        private String description;
-        private int price;
-        public String getId() { return id; }
-        public String getName() { return name; }
-        public String getDescription() { return description; }
-        public int getPrice() { return price; }
     }
 } 
