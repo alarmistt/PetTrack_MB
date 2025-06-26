@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#FFEBEE"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvFail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="❌ Thanh toán thất bại!"
+        android:textSize="20sp"
+        android:textColor="#C62828"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btnBackToWalletFail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quay về trang đặt lịch"
+        android:backgroundTint="#C62828"
+        android:textColor="#FFFFFF" />
+</LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.pet_track.api;
 
-import com.example.pet_track.utils.ToStringConverterFactory;
 import com.example.pet_track.utils.UnsafeOkHttpClient;
 
 import okhttp3.OkHttpClient;
@@ -10,18 +9,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static final String BASE_URL = "https://10.0.2.2:7276/";
+    private static Retrofit retrofit;
 
-    // Dùng cho login/register
     public static Retrofit getAnonymousClient() {
-        OkHttpClient client = UnsafeOkHttpClient.getUnsafeOkHttpClient();
-        return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if (retrofit == null) {
+            OkHttpClient client = UnsafeOkHttpClient.getUnsafeOkHttpClient();
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit;
     }
 
-    // Dùng cho các request có token
     public static Retrofit getAuthenticatedClient(String token) {
         OkHttpClient.Builder clientBuilder = UnsafeOkHttpClient.getUnsafeOkHttpClient().newBuilder();
 

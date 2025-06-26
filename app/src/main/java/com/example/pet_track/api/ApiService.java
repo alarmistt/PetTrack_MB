@@ -1,5 +1,6 @@
 package com.example.pet_track.api;
 
+import com.example.pet_track.models.request.CreateLinkBookingRequest;
 import com.example.pet_track.models.request.LoginRequest;
 import com.example.pet_track.models.request.RegisterRequest;
 import com.example.pet_track.models.response.BookingHistoryResponse;
@@ -7,6 +8,10 @@ import com.example.pet_track.models.response.LoginResponse;
 import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.RegisterResponse;
 import com.example.pet_track.models.response.WrapResponse;
+import com.example.pet_track.models.request.CreatePaymentRequest;
+import com.example.pet_track.models.response.payment.CreatePaymentResult;
+import com.example.pet_track.models.response.payment.PaymentResponse;
+import com.example.pet_track.models.response.wallet.TopUpResponse;
 import com.example.pet_track.models.response.wallet.WalletResponse;
 import com.example.pet_track.models.response.ClinicResponse;
 
@@ -23,8 +28,16 @@ public interface ApiService {
     @POST("api/Authentication/register")
     Call<WrapResponse<RegisterResponse>> register(@Body RegisterRequest request);
     @GET("api/Wallet/me")
-    Call<WalletResponse> myWallet();
-
+    Call<WrapResponse<WalletResponse>> myWallet();
+    @GET("api/Payment/get-history-transaction")
+    Call<WrapResponse<PagingResponse<TopUpResponse>>> getTopUpTransaction(
+            @Query("pageIndex") int pageIndex,
+            @Query("pageSize") int pageSize,
+            @Query("userId") String userId,
+            @Query("status") String status
+    );
+    @POST("/api/Payment/check-status-transaction")
+    Call<WrapResponse<PagingResponse<String>>> checkStatusTransaction(@Query("orderCode") String orderCode);
     @GET("api/Booking")
     Call<WrapResponse<PagingResponse<BookingHistoryResponse>>> getBookings(
             @Query("pageIndex") int pageIndex,
@@ -33,6 +46,10 @@ public interface ApiService {
             @Query("userId") String userId,
             @Query("status") String status
     );
+    @POST("api/Payment/create-booking-payment")
+    Call<WrapResponse<CreatePaymentResult>> createBookingPayment(@Body CreateLinkBookingRequest createPaymentRequest);
     @GET("api/public/clinics/approved")
     Call<WrapResponse<List<ClinicResponse>>> getApprovedClinics();
+    @POST("api/Payment/create-payment-intent")
+    Call<WrapResponse<PaymentResponse>> createPaymentIntent(@Body CreatePaymentRequest createPaymentRequest);
 }

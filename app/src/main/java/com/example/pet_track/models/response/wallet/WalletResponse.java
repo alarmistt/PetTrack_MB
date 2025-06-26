@@ -1,51 +1,60 @@
 package com.example.pet_track.models.response.wallet;
 
-import java.time.LocalDateTime;
+import com.google.gson.annotations.SerializedName;
 
 public class WalletResponse {
-    public String Id;
-    public String UserId;
-    public Double Balance;
-    public LocalDateTime createdTime;
-    public LocalDateTime lastUpdatedTime;
+    @SerializedName("id")
+    private String id;
+
+    @SerializedName("userId")
+    private String userId;
+
+    @SerializedName("balance")
+    private Double balance;
+
+    @SerializedName("createdTime")
+    private String createdTime;
+
+    @SerializedName("lastUpdatedTime")
+    private String lastUpdatedTime;
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public Double getBalance() {
-        return Balance;
+        return balance;
     }
 
     public void setBalance(Double balance) {
-        Balance = balance;
+        this.balance = balance;
     }
 
-    public LocalDateTime getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
+    public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
 
-    public LocalDateTime getLastUpdatedTime() {
+    public String getLastUpdatedTime() {
         return lastUpdatedTime;
     }
 
-    public void setLastUpdatedTime(LocalDateTime lastUpdatedTime) {
+    public void setLastUpdatedTime(String lastUpdatedTime) {
         this.lastUpdatedTime = lastUpdatedTime;
     }
 }
