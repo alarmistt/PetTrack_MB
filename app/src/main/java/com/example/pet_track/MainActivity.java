@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.pet_track.databinding.ActivityMainBinding;
 import com.example.pet_track.ui.login.LoginActivity;
+import com.example.pet_track.ui.wallet.WalletFragment;
 import com.example.pet_track.viewmodel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -93,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
+                return true;
+            }else if (item.getItemId() == R.id.profile) {
+                Intent intent = new Intent(this, com.example.pet_track.ui.profile.ProfileActivity.class);
+                startActivity(intent);
                 return true;
             }
 

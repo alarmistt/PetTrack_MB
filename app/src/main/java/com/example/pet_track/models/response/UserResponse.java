@@ -7,14 +7,16 @@ public class UserResponse {
     private String phoneNumber;
     private String role;
     private String avatarUrl;
+    private String address;
 
-    public UserResponse(String id, String email, String fullName, String phoneNumber, String role, String avatarUrl) {
+    public UserResponse(String id, String email, String fullName, String phoneNumber, String role, String avatarUrl,String address) {
         this.id = id;
         this.email = email;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.role = role;
         this.avatarUrl = avatarUrl;
+        this.address = address;
     }
 
     public String getId() {
@@ -28,6 +30,13 @@ public class UserResponse {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
     }
     public String getFullName() {
         return fullName;

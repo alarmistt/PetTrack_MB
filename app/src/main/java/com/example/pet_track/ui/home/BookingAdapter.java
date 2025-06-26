@@ -35,12 +35,38 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     @Override
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
         BookingHistoryResponse item = bookingList.get(position);
+
+        // Tên phòng khám
         holder.tvClinicName.setText(item.getClinicName());
-        holder.tvServiceName.setText(item.getServicePackageName());
-        holder.tvStatus.setText(item.getStatus());
-        holder.tvDate.setText(item.getAppointmentDate().substring(0, 10)); // yyyy-MM-dd
-        holder.tvPrice.setText(item.getPrice() + " VND");
+
+        // Tên dịch vụ
+        holder.tvServiceName.setText("💼 Dịch vụ: " + item.getServicePackageName());
+
+        // Ngày hẹn (cắt chuỗi yyyy-MM-dd)
+        String date = item.getAppointmentDate();
+        holder.tvDate.setText("📅 " + (date.length() >= 10 ? date.substring(0, 10) : date));
+
+        // Giá định dạng có dấu chấm
+        String formattedPrice = String.format("%,d", item.getPrice()).replace(",", ".");
+        holder.tvPrice.setText("💰 " + formattedPrice + " VND");
+
+        // Trạng thái có emoji và đổi màu
+        String status = item.getStatus();
+        if (status.equalsIgnoreCase("Pending")) {
+            holder.tvStatus.setText("🟡 Đang chờ");
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_orange_dark));
+        } else if (status.equalsIgnoreCase("Confirmed")) {
+            holder.tvStatus.setText("🟢 Đã xác nhận");
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_green_dark));
+        } else if (status.equalsIgnoreCase("Cancelled")) {
+            holder.tvStatus.setText("🔴 Đã hủy");
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_red_dark));
+        } else {
+            holder.tvStatus.setText("⚪ " + status);
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getResources().getColor(android.R.color.darker_gray));
+        }
     }
+
 
     @Override
     public int getItemCount() {

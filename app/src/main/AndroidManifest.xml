@@ -61,6 +61,7 @@
         <activity
             android:name=".ui.booking.BookingPage"
             android:exported="false" />
+        <activity android:name=".ui.profile.ProfileActivity" />
 
         <activity
             android:name=".ui.booking.CreateBookingActivity"

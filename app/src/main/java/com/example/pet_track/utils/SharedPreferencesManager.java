@@ -39,7 +39,9 @@ public class SharedPreferencesManager {
     public void clear() {
         preferences.edit().clear().apply();
     }
-
+    public String getAddress() {
+        return preferences.getString("address", null);
+    }
     public void saveUserInfo(UserResponse user) {
         preferences.edit()
                 .putString("userId", user.getId())
@@ -48,6 +50,7 @@ public class SharedPreferencesManager {
                 .putString("phoneNumber", user.getPhoneNumber())
                 .putString("role", user.getRole())
                 .putString("avatarUrl", user.getAvatarUrl())
+                .putString("address", user.getAddress())
                 .apply();
     }
 
@@ -58,7 +61,8 @@ public class SharedPreferencesManager {
                 getFullName(),
                 getPhoneNumber(),
                 getRole(),
-                getAvatarUrl()
+                getAvatarUrl(),
+                getAddress()
         );
     }
 
