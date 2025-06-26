@@ -141,7 +141,7 @@ public class BookingPaymentFragment extends Fragment {
         Fragment fragment = isSuccess ? new PaymentSuccessFragment() : new PaymentFailFragment();
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, fragment)
+                .replace(R.id.payment_fragment_container, fragment)  // <-- Sửa tại đây
                 .addToBackStack(null)
                 .commit();
     }

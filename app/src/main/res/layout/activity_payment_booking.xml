@@ -244,5 +244,13 @@
         app:layout_constraintStart_toStartOf="parent">
         <include layout="@layout/footer" />
     </FrameLayout>
-
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/payment_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btn_back"
+        app:layout_constraintBottom_toTopOf="@id/footer_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout> 

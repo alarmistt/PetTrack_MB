@@ -12,6 +12,9 @@ public class Slot {
     @SerializedName("endTime")
     private String endTime;
 
+    @SerializedName("status")
+    private String status;
+
     public String getId() {
         return id;
     }
@@ -34,5 +37,13 @@ public class Slot {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 } 

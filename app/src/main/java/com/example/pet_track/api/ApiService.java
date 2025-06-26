@@ -7,7 +7,9 @@ import com.example.pet_track.models.request.LoginRequest;
 import com.example.pet_track.models.request.RegisterRequest;
 import com.example.pet_track.models.request.BookingRequest;
 import com.example.pet_track.models.response.BookingHistoryResponse;
+import com.example.pet_track.models.response.BookingResponse;
 import com.example.pet_track.models.response.LoginResponse;
+import com.example.pet_track.models.response.PagingNotiResponse;
 import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.RegisterResponse;
 import com.example.pet_track.models.response.UserResponse;
@@ -32,7 +34,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -50,7 +51,7 @@ public interface ApiService {
             @Query("status") String status
     );
     @POST("/api/Payment/check-status-transaction")
-    Call<WrapResponse<PagingResponse<String>>> checkStatusTransaction(@Query("orderCode") String orderCode);
+    Call<WrapResponse<PagingNotiResponse>> checkStatusTransaction(@Query("orderCode") String orderCode);
     @GET("api/Booking")
     Call<WrapResponse<PagingResponse<BookingHistoryResponse>>> getBookings(
             @Query("pageIndex") int pageIndex,
@@ -76,7 +77,7 @@ public interface ApiService {
     Call<WrapResponse<ClinicResponse>> getClinicDetails(@Path("clinicId") String clinicId);
 
     @POST("api/Booking")
-    Call<WrapResponse<Object>> createBooking(@Body BookingRequest request);
+    Call<WrapResponse<BookingResponse>> createBooking(@Body BookingRequest request);
 
     @GET("api/Authentication/profile")
     Call<WrapResponse<UserResponse>> getProfile();

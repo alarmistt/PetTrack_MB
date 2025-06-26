@@ -70,15 +70,12 @@
         android:textSize="16sp"
         android:layout_marginTop="16dp"/>
 
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/time_slot_grid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:columnCount="4"
-        android:layout_marginTop="8dp">
-
-    </androidx.gridlayout.widget.GridLayout>
+            <android.widget.GridLayout
+                android:id="@+id/time_slot_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:layout_marginTop="8dp"/>
 
     <TextView
         android:layout_width="wrap_content"
