@@ -95,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            } else if (item.getItemId() == R.id.nav_wallet) {
-                Intent intent = new Intent(this, WalletFragment.class);
-                startActivity(intent);
-                return true;
             }else if (item.getItemId() == R.id.profile) {
                 Intent intent = new Intent(this, com.example.pet_track.ui.profile.ProfileActivity.class);
                 startActivity(intent);
