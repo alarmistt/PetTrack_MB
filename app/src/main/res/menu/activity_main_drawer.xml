@@ -9,14 +9,6 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
-        <item
             android:id="@+id/nav_wallet"
             android:icon="@android:drawable/ic_menu_view"
             android:title="@string/menu_wallet" />
@@ -29,13 +21,17 @@
             android:icon="@android:drawable/ic_menu_send"
             android:title="Test Booking Payment" />
     </group>
-    <item
-        android:id="@+id/nav_booking_history"
-        android:icon="@android:drawable/arrow_down_float"
-        android:title="Lịch sử đặt lịch" />
-    <item
-        android:id="@+id/nav_logout"
-        android:icon="@android:drawable/ic_lock_power_off"
-        android:title="@string/menu_logout" />
 
+    <item android:title="Khác">
+        <menu>
+            <item
+                android:id="@+id/nav_booking_history"
+                android:icon="@android:drawable/arrow_down_float"
+                android:title="Lịch sử đặt lịch" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
 </menu>
