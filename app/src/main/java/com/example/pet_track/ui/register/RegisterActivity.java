@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerViewModel.getRegisterResult().observe(this, registerResponse -> {
             errorMessageTextView.setVisibility(View.GONE);
-            Toast.makeText(this, "Registration successful! ID: " + registerResponse.getId(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
