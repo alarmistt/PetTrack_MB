@@ -1,5 +1,6 @@
 package com.example.pet_track.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,32 +65,33 @@ public class BookingHistoryFragment extends Fragment {
 
         // Tab Booked → trạng thái Pending
         btnBooked.setOnClickListener(v -> {
-            fetchBookingHistory("Pending");
+            fetchBookingHistory("Completed");
             setActiveTab(btnBooked);
         });
 
         // Tab Upcoming → trạng thái Cancelled
         btnUpcoming.setOnClickListener(v -> {
-            fetchBookingHistory("Cancelled");
+            fetchBookingHistory("Pending");
             setActiveTab(btnUpcoming);
         });
 
         // Tab Cancelled → trạng thái Completed
         btnCancelled.setOnClickListener(v -> {
-            fetchBookingHistory("Completed");
+            fetchBookingHistory("Cancelled");
             setActiveTab(btnCancelled);
         });
     }
 
     private void setActiveTab(Button activeButton) {
-        // Reset màu tất cả
-        btnBooked.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-        btnUpcoming.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-        btnCancelled.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        Context context = activeButton.getContext(); // hoặc dùng getActivity() nếu trong Fragment
 
-        // Màu nổi bật cho tab được chọn
-        activeButton.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+        btnUpcoming.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        btnBooked.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        btnCancelled.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+
+        activeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.teal_200)); // màu chọn
     }
+
 
     private void fetchBookingHistory(String status) {
         String userId = SharedPreferencesManager.getInstance(getContext()).getUserId();

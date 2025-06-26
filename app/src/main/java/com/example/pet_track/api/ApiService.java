@@ -6,6 +6,8 @@ import com.example.pet_track.models.response.BookingHistoryResponse;
 import com.example.pet_track.models.response.LoginResponse;
 import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.RegisterResponse;
+import com.example.pet_track.models.response.UserResponse;
+import com.example.pet_track.models.response.UserUpdateRequest;
 import com.example.pet_track.models.response.WrapResponse;
 import com.example.pet_track.models.response.wallet.WalletResponse;
 import com.example.pet_track.models.response.ClinicResponse;
@@ -15,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -35,4 +38,9 @@ public interface ApiService {
     );
     @GET("api/public/clinics/approved")
     Call<WrapResponse<List<ClinicResponse>>> getApprovedClinics();
+
+    @GET("api/Authentication/profile")
+    Call<WrapResponse<UserResponse>> getProfile();
+    @PUT("api/Authentication/profile")
+    Call<Void> updateProfile(@Body UserUpdateRequest request);
 }

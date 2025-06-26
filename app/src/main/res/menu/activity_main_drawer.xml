@@ -20,6 +20,10 @@
             android:id="@+id/nav_wallet"
             android:icon="@android:drawable/ic_menu_view"
             android:title="@string/menu_wallet" />
+        <item
+            android:id="@+id/profile"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Proflie" />
     </group>
     <item
         android:id="@+id/nav_booking_history"

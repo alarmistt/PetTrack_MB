@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,26 +5,17 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <!-- Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingBottom="12dp">
-
-
-
-    </LinearLayout>
-
     <!-- Tabs -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
-        android:background="@drawable/outline_arrow_back_24"
+        android:background="#E0E7FF"
         android:padding="4dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:backgroundTint="#F0F2F5"
+        android:clipToPadding="false">
 
         <Button
             android:id="@+id/btnUpcoming"
@@ -34,7 +24,8 @@
             android:layout_weight="1"
             android:backgroundTint="#FFFFFF"
             android:text="Sắp tới"
-            android:textColor="#3D6EF7" />
+
+            android:background="@drawable/tab_left" />
 
         <Button
             android:id="@+id/btnBooked"
@@ -43,7 +34,7 @@
             android:layout_height="match_parent"
             android:text="Đã đặt"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#3D6EF7" />
+            android:background="@drawable/tab_center" />
 
         <Button
             android:id="@+id/btnCancelled"
@@ -51,8 +42,8 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="Hủy bỏ"
-            android:textColor="#3D6EF7"
-            android:backgroundTint="#FFFFFF" />
+
+            android:background="@drawable/tab_right" />
     </LinearLayout>
 
     <!-- RecyclerView -->

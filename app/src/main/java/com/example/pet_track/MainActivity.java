@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, WalletActivity.class);
                 startActivity(intent);
                 return true;
+            }else if (item.getItemId() == R.id.profile) {
+                Intent intent = new Intent(this, com.example.pet_track.ui.profile.ProfileActivity.class);
+                startActivity(intent);
+                return true;
             }
             // Default navigation handling
             return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
