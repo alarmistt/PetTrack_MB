@@ -65,6 +65,10 @@
         <activity
             android:name=".ui.booking.CreateBookingActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.booking.PaymentBookingActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

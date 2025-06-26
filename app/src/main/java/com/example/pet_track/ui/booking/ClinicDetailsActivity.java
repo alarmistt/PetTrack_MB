@@ -14,6 +14,7 @@ import com.example.pet_track.R;
 import com.example.pet_track.api.ApiService;
 import com.example.pet_track.api.ApiServiceBuilder;
 import com.example.pet_track.models.response.ClinicResponse;
+import com.example.pet_track.models.response.ServicePackage;
 import com.example.pet_track.models.response.WrapResponse;
 import java.util.List;
 import retrofit2.Call;
@@ -44,25 +45,13 @@ public class ClinicDetailsActivity extends AppCompatActivity {
 
         // Gọi API lấy danh sách clinic, tìm clinic theo id
         ApiService api = ApiServiceBuilder.buildService(ApiService.class, this);
-        api.getApprovedClinics().enqueue(new Callback<WrapResponse<List<ClinicResponse>>>() {
+        api.getClinicDetails(clinicId).enqueue(new Callback<WrapResponse<ClinicResponse>>() {
             @Override
-            public void onResponse(Call<WrapResponse<List<ClinicResponse>>> call, Response<WrapResponse<List<ClinicResponse>>> response) {
+            public void onResponse(Call<WrapResponse<ClinicResponse>> call, Response<WrapResponse<ClinicResponse>> response) {
                 Log.d("ClinicDetails", "API onResponse. Code: " + response.code());
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                    ClinicResponse clinic = null;
-                    for (ClinicResponse c : response.body().getData()) {
-                        if (clinicId.equals(c.getId())) {
-                            clinic = c;
-                            Log.d("ClinicDetails", "Clinic found: " + clinic.getName());
-                            break;
-                        }
-                    }
-                    if (clinic == null) {
-                        Log.e("ClinicDetails", "Clinic with id " + clinicId + " not found in API response.");
-                        Toast.makeText(ClinicDetailsActivity.this, "Không tìm thấy phòng khám!", Toast.LENGTH_SHORT).show();
-                        finish();
-                        return;
-                    }
+                    ClinicResponse clinic = response.body().getData();
+                    Log.d("ClinicDetails", "Clinic found: " + clinic.getName());
                     showClinic(clinic);
                 } else {
                     Log.e("ClinicDetails", "API call failed or data is null. Response: " + response.toString());
@@ -72,7 +61,7 @@ public class ClinicDetailsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<WrapResponse<List<ClinicResponse>>> call, Throwable t) {
+            public void onFailure(Call<WrapResponse<ClinicResponse>> call, Throwable t) {
                 Log.e("ClinicDetails", "API onFailure: " + t.getMessage(), t);
                 Toast.makeText(ClinicDetailsActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 finish();
@@ -85,7 +74,7 @@ public class ClinicDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ClinicDetailsActivity.this, CreateBookingActivity.class);
-                    i.putExtra("clinic_id", clinicId);
+                    i.putExtra("clinicId", clinicId);
                     startActivity(i);
                 }
             });
@@ -104,7 +93,7 @@ public class ClinicDetailsActivity extends AppCompatActivity {
             serviceContainer.removeAllViews();
             LayoutInflater inflater = LayoutInflater.from(this);
             if (clinic.getServicePackages() != null && !clinic.getServicePackages().isEmpty()) {
-                for (ClinicResponse.ServicePackage sp : clinic.getServicePackages()) {
+                for (ServicePackage sp : clinic.getServicePackages()) {
                     View item = inflater.inflate(R.layout.service_package_item, serviceContainer, false);
                     ((TextView) item.findViewById(R.id.service_name)).setText(sp.getName());
                     ((TextView) item.findViewById(R.id.service_description)).setText(sp.getDescription());
