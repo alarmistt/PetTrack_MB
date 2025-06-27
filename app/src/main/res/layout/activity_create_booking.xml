@@ -61,7 +61,8 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        style="@style/SimpleCalendarStyle"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -92,27 +93,14 @@
 
     </RadioGroup>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ghi chú"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"/>
-
-    <EditText
-        android:id="@+id/editNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ghi chú tại đây"
-        android:layout_marginTop="8dp"/>
-
     <Button
         android:id="@+id/btnXacNhan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Xác nhận"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#1E90FF"/>
+        android:background="@drawable/btn_xacnhan_background"
+        android:textColor="@android:color/white"/>
 </LinearLayout>
     </LinearLayout>
 

@@ -52,13 +52,7 @@ public class BookingViewModel extends ViewModel {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Slot> allSlots = response.body().getData();
                     if (allSlots != null) {
-                        List<Slot> activeSlots = new java.util.ArrayList<>();
-                        for (Slot slot : allSlots) {
-                            if (slot.getStatus() != null && slot.getStatus().equalsIgnoreCase("Active")) {
-                                activeSlots.add(slot);
-                            }
-                        }
-                        slots.postValue(activeSlots);
+                        slots.postValue(allSlots);
                     } else {
                         slots.postValue(null);
                     }
