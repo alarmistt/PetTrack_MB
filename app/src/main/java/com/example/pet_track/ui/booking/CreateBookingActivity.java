@@ -33,7 +33,6 @@ public class CreateBookingActivity extends AppCompatActivity {
     private CalendarView calendarView;
     private RadioGroup radioGroupServices;
     private GridLayout timeSlotGrid;
-    private EditText editNote;
     private TextView dateTextView;
     private Button btnXacNhan;
     private BookingViewModel bookingViewModel;
@@ -61,7 +60,6 @@ public class CreateBookingActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         radioGroupServices = findViewById(R.id.radioGroup);
         timeSlotGrid = findViewById(R.id.time_slot_grid);
-        editNote = findViewById(R.id.editNote);
         dateTextView = findViewById(R.id.dateTextView);
         btnXacNhan = findViewById(R.id.btnXacNhan);
 
@@ -92,7 +90,7 @@ public class CreateBookingActivity extends AppCompatActivity {
             int selectedIndex = radioGroupServices.indexOfChild(findViewById(selectedServiceId));
             ServicePackage selectedService = servicePackages.get(selectedIndex);
 
-            String note = editNote.getText().toString();
+            String note = ""; // Không có editNote nên sử dụng chuỗi rỗng
 
             Intent intent = new Intent(CreateBookingActivity.this, PaymentBookingActivity.class);
             intent.putExtra("serviceName", selectedService.getName());
@@ -144,41 +142,77 @@ public class CreateBookingActivity extends AppCompatActivity {
 
         for (Slot slot : slots) {
             Button slotButton = new Button(this);
-            String slotText = slot.getStartTime() + " - " + slot.getEndTime();
+            
+            // Format thời gian chỉ hiển thị hh:mm
+            String startTime = formatTimeToHHMM(slot.getStartTime());
+            String endTime = formatTimeToHHMM(slot.getEndTime());
+            String slotText = startTime + " - " + endTime;
             slotButton.setText(slotText);
+            
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 0;
             params.height = GridLayout.LayoutParams.WRAP_CONTENT;
             params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
             params.setMargins(8, 8, 8, 8);
             slotButton.setLayoutParams(params);
-            slotButton.setBackgroundColor(Color.LTGRAY);
-
-            slotButton.setOnClickListener(v -> {
-                if (selectedSlotButton != null) {
-                    selectedSlotButton.setBackgroundColor(Color.LTGRAY);
-                }
-                slotButton.setBackgroundColor(Color.CYAN);
-                selectedSlotButton = slotButton;
-                selectedSlot = slot;
-
-                // Combine selected date with slot time
-                if (selectedSlot != null && selectedSlot.getStartTime() != null) {
-                    try {
-                        String[] timeParts = selectedSlot.getStartTime().split(":");
-                        int hour = Integer.parseInt(timeParts[0]);
-                        int minute = Integer.parseInt(timeParts[1]);
-                        selectedCalendar.set(Calendar.HOUR_OF_DAY, hour);
-                        selectedCalendar.set(Calendar.MINUTE, minute);
-                        selectedCalendar.set(Calendar.SECOND, 0);
-                        selectedCalendar.set(Calendar.MILLISECOND, 0);
-                    } catch (Exception e) {
-                        Log.e("CreateBookingActivity", "Could not parse slot time", e);
+            
+            // Đặt background và trạng thái dựa trên status
+            boolean isActive = slot.getStatus() != null && slot.getStatus().equalsIgnoreCase("Active");
+            
+            if (isActive) {
+                // Slot active - màu trắng, có thể chọn
+                slotButton.setBackgroundResource(R.drawable.slot_button_background);
+                slotButton.setTextColor(Color.BLACK);
+                slotButton.setEnabled(true);
+                
+                slotButton.setOnClickListener(v -> {
+                    if (selectedSlotButton != null) {
+                        selectedSlotButton.setBackgroundResource(R.drawable.slot_button_background);
+                        selectedSlotButton.setTextColor(Color.BLACK);
                     }
-                }
-            });
+                    slotButton.setBackgroundResource(R.drawable.slot_button_selected_background);
+                    slotButton.setTextColor(Color.WHITE);
+                    selectedSlotButton = slotButton;
+                    selectedSlot = slot;
+
+                    // Combine selected date with slot time
+                    if (selectedSlot != null && selectedSlot.getStartTime() != null) {
+                        try {
+                            String[] timeParts = selectedSlot.getStartTime().split(":");
+                            int hour = Integer.parseInt(timeParts[0]);
+                            int minute = Integer.parseInt(timeParts[1]);
+                            selectedCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                            selectedCalendar.set(Calendar.MINUTE, minute);
+                            selectedCalendar.set(Calendar.SECOND, 0);
+                            selectedCalendar.set(Calendar.MILLISECOND, 0);
+                        } catch (Exception e) {
+                            Log.e("CreateBookingActivity", "Could not parse slot time", e);
+                        }
+                    }
+                });
+            } else {
+                // Slot inactive - màu xám, không thể chọn
+                slotButton.setBackgroundResource(R.drawable.slot_button_inactive_background);
+                slotButton.setTextColor(Color.BLACK);
+                slotButton.setEnabled(false);
+            }
+            
             timeSlotGrid.addView(slotButton);
         }
+    }
+
+    // Helper method để format thời gian từ HH:mm:ss thành HH:mm
+    private String formatTimeToHHMM(String time) {
+        if (time == null || time.isEmpty()) {
+            return "";
+        }
+        
+        // Nếu thời gian có format HH:mm:ss, chỉ lấy HH:mm
+        if (time.length() >= 5) {
+            return time.substring(0, 5);
+        }
+        
+        return time;
     }
 
     private void updateServicesUI(List<ServicePackage> servicePackages) {

@@ -8,4 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#007BFF</color>
+    
+    <!-- Calendar colors -->
+    <color name="calendar_selected_text">#FF000000</color>
+    <color name="calendar_selected_background">#FFD0D0D0</color>
+    
+    <!-- Slot colors -->
+    <color name="slot_inactive_background">#FFD0D0D0</color>
+    <color name="slot_selected_background">#FFFFCC80</color>
 </resources>
