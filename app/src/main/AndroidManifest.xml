@@ -63,7 +63,7 @@
 
         <activity
             android:name=".ui.booking.BookingPage"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity android:name=".ui.profile.ProfileActivity"
             android:exported="false" />
@@ -75,6 +75,10 @@
         <activity
             android:name=".ui.booking.PaymentBookingActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.cart.CartActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
