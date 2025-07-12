@@ -18,11 +18,6 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-
-
-
-
-            <!-- Tiêu đề "Cá nhân" -->
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -32,8 +27,6 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_marginRight="60dp"/>
-
-
         </LinearLayout>
 
         <!-- Avatar -->
@@ -48,7 +41,6 @@
                 android:id="@+id/avatarImage"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-
                 android:layout_centerHorizontal="true"
                 android:scaleType="centerCrop"
                 android:background="@drawable/camera" />
@@ -64,111 +56,74 @@
                 android:padding="6dp" />
         </RelativeLayout>
 
-        <!-- Name -->
-        <EditText
+        <!-- Tên -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên:"
+            android:textColor="#555"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
             android:id="@+id/nameEdit"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Tên"
-            android:background="@color/cardview_light_background"
+            android:layout_height="wrap_content"
+            android:text="Tên người dùng"
+            android:textSize="16sp"
+            android:textColor="#000"
             android:padding="10dp"
-            android:textColor="#000" />
-
-        <!-- Phone number -->
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:background="@color/cardview_light_background" >
-
-
-
-            <EditText
-                android:id="@+id/phoneEdit"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:inputType="phone"
-                android:hint="SDT"
-                android:padding="10dp"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <!-- Email -->
-        <EditText
-            android:id="@+id/Imageurl"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="ImageURL"
-            android:enabled="false"
-            android:layout_marginTop="16dp"
             android:background="@color/cardview_light_background"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Số điện thoại -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại:"
+            android:textColor="#555"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/phoneEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0123456789"
+            android:textSize="16sp"
+            android:textColor="#000"
             android:padding="10dp"
-            android:textColor="#999" />
+            android:background="@color/cardview_light_background"
+            android:layout_marginBottom="12dp" />
 
-        <!-- Address -->
+        <!-- Địa chỉ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ:"
+            android:textColor="#555"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/addressEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minLines="2"
-            android:maxLines="4"
-            android:hint="Địa chỉ"
-            android:layout_marginTop="16dp"
-            android:background="@color/cardview_light_background"
-            android:padding="10dp"
+            android:text="Địa chỉ người dùng"
+            android:textSize="16sp"
             android:textColor="#000"
-            android:inputType="textMultiLine"
-            android:scrollHorizontally="false"
-            android:layout_marginBottom="8dp" />
+            android:padding="10dp"
+            android:background="@color/cardview_light_background"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Button: Xem vị trí -->
+        <!-- Nút cập nhật -->
         <Button
-            android:id="@+id/btnShowLocation"
+            android:id="@+id/btnUpdateProfile"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="XEM VỊ TRÍ TRÊN BẢN ĐỒ"
-            android:backgroundTint="#4CAF50"
+            android:text="CẬP NHẬT HỒ SƠ"
+            android:backgroundTint="#3D6EF7"
             android:textColor="#fff"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="8dp" />
-
-
-
-
-
-        <!-- Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp">
-
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="48dp"
-                android:text="Cancel"
-                android:textColor="#000"
-                android:backgroundTint="#fff"
-                />
-
-
-            <Button
-
-                android:id="@+id/btnSave"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="48dp"
-                android:text="Save"
-                android:textColor="#fff"
-                android:backgroundTint="#3D6EF7"
-                android:layout_marginStart="16dp" />
-        </LinearLayout>
-
+            android:layout_marginTop="12dp" />
     </LinearLayout>
 </ScrollView>

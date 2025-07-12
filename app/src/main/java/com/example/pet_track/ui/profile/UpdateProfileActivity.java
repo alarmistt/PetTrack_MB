@@ -1,5 +1,6 @@
 package com.example.pet_track.ui.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pet_track.R;
 import com.example.pet_track.api.ApiClient;
 import com.example.pet_track.api.ApiService;
-
 import com.example.pet_track.models.response.UserUpdateRequest;
 import com.example.pet_track.utils.SharedPreferencesManager;
 
@@ -26,20 +26,26 @@ public class UpdateProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.actitivy_profile); // chắc chắn tên file XML đúng
+        setContentView(R.layout.activity_update_profile);
 
         // Ánh xạ view
         nameEdit = findViewById(R.id.nameEdit);
         phoneEdit = findViewById(R.id.phoneEdit);
         addressEdit = findViewById(R.id.addressEdit);
-        saveButton = findViewById(R.id.btnSave); // Đảm bảo bạn có android:id="@+id/btnSave" trong XML
+        saveButton = findViewById(R.id.btnSave);
 
-        // Bắt sự kiện nút Save
+        // Lấy dữ liệu cũ từ Intent
+        Intent intent = getIntent();
+        nameEdit.setText(intent.getStringExtra("fullName"));
+        phoneEdit.setText(intent.getStringExtra("phone"));
+        addressEdit.setText(intent.getStringExtra("address"));
+
+        // Bắt sự kiện lưu
         saveButton.setOnClickListener(v -> {
             String fullName = nameEdit.getText().toString().trim();
             String phoneNumber = phoneEdit.getText().toString().trim();
             String address = addressEdit.getText().toString().trim();
-            String avatarUrl = ""; // nếu bạn chưa cho người dùng chọn ảnh thì để tạm trống
+            String avatarUrl = ""; // Chưa cho chọn ảnh
 
             UserUpdateRequest request = new UserUpdateRequest(fullName, address, phoneNumber, avatarUrl);
 
@@ -51,6 +57,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(UpdateProfileActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
                     } else {
                         Toast.makeText(UpdateProfileActivity.this, "Lỗi khi cập nhật", Toast.LENGTH_SHORT).show();
                     }

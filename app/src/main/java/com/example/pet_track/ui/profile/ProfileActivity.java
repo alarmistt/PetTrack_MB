@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -24,58 +26,40 @@ import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText nameEdit, phoneEdit, addressEdit;
+    private static final int REQUEST_UPDATE = 1001;
+
+    private TextView nameEdit, phoneEdit, addressEdit;
     private ImageView avatarImage;
-    private Button btnShowLocation;
+    private Button btnUpdateProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.actitivy_profile); // đảm bảo đúng tên layout
+        setContentView(R.layout.actitivy_profile);
 
-        // Ánh xạ view từ XML
+        // Ánh xạ view
         nameEdit = findViewById(R.id.nameEdit);
         phoneEdit = findViewById(R.id.phoneEdit);
         addressEdit = findViewById(R.id.addressEdit);
         avatarImage = findViewById(R.id.avatarImage);
-        btnShowLocation = findViewById(R.id.btnShowLocation);
+        btnUpdateProfile = findViewById(R.id.btnUpdateProfile);
 
-        // Xử lý mở Google Maps khi nhấn nút
-        btnShowLocation.setOnClickListener(v -> {
-            String address = addressEdit.getText().toString().trim();
-            if (!address.isEmpty()) {
-                try {
-                    String encodedAddress = Uri.encode(address);
-                    String mapUri = "geo:0,0?q=" + encodedAddress;
-
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
-
-                    // Sử dụng Intent Chooser để hiển thị tất cả ứng dụng có thể xử lý
-                    Intent chooser = Intent.createChooser(mapIntent, "Chọn ứng dụng bản đồ");
-
-                    if (chooser.resolveActivity(getPackageManager()) != null) {
-                        startActivity(chooser);
-                    } else {
-                        Toast.makeText(ProfileActivity.this, "Không tìm thấy ứng dụng bản đồ", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (Exception e) {
-                    Toast.makeText(ProfileActivity.this, "Lỗi khi mở bản đồ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(ProfileActivity.this, "Địa chỉ không hợp lệ", Toast.LENGTH_SHORT).show();
-            }
+        btnUpdateProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, UpdateProfileActivity.class);
+            intent.putExtra("fullName", nameEdit.getText().toString().trim());
+            intent.putExtra("phone", phoneEdit.getText().toString().trim());
+            intent.putExtra("address", addressEdit.getText().toString().trim());
+            startActivityForResult(intent, REQUEST_UPDATE);
         });
 
+        loadProfile();
+    }
 
-        // Lấy token từ SharedPreferences
+    private void loadProfile() {
         String token = SharedPreferencesManager.getInstance(this).getToken();
-
-        // Gọi API lấy thông tin cá nhân
         ApiService apiService = ApiClient.getAuthenticatedClient(token).create(ApiService.class);
-        Call<WrapResponse<UserResponse>> call = apiService.getProfile();
 
-        call.enqueue(new Callback<WrapResponse<UserResponse>>() {
+        apiService.getProfile().enqueue(new Callback<WrapResponse<UserResponse>>() {
             @Override
             public void onResponse(Call<WrapResponse<UserResponse>> call, Response<WrapResponse<UserResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -100,5 +84,13 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_UPDATE && resultCode == RESULT_OK) {
+            loadProfile(); // reload profile sau khi cập nhật thành công
+        }
     }
 }
