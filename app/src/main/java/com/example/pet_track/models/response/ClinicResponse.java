@@ -27,6 +27,7 @@ public class ClinicResponse {
     public List<ServicePackage> getServicePackages() { return servicePackages; }
     public String getSlogan() { return slogan; }
     public String getDescription() { return description; }
+    public String getBannerUrl() { return bannerUrl; }
 
     public static class Schedule {
         private int dayOfWeek;
