@@ -2,10 +2,12 @@ package com.example.pet_track.ui.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pet_track.R;
 import com.example.pet_track.models.response.ClinicResponse;
 import com.example.pet_track.utils.SharedPreferencesManager;
@@ -61,17 +65,32 @@ public class ClinicListFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         for (ClinicResponse clinic : clinics) {
-            View clinicView = inflater.inflate(R.layout.clinic_card, clinicsContainer, false);
+            View clinicView = inflater.inflate(R.layout.clinic_card, listHolder, false);
 
             TextView clinicName = clinicView.findViewById(R.id.clinic_name);
             TextView clinicAddress = clinicView.findViewById(R.id.clinic_address);
             TextView clinicPhone = clinicView.findViewById(R.id.clinic_phone);
             TextView clinicTime = clinicView.findViewById(R.id.clinic_time);
+            ImageView clinicBanner = clinicView.findViewById(R.id.clinic_icon);
             Button btnBooking = clinicView.findViewById(R.id.btn_booking);
 
             clinicName.setText(clinic.getName());
             clinicAddress.setText(clinic.getAddress());
             clinicPhone.setText(clinic.getPhoneNumber());
+
+            // Set ảnh banner nếu có, nếu không thì để ảnh mặc định
+            Log.d("BannerDebug", "URL: " + clinic.getBannerUrl());
+
+            if (clinic.getBannerUrl() != null && !clinic.getBannerUrl().isEmpty()) {
+                Glide.with(requireContext())
+                        .load(clinic.getBannerUrl())
+                        .placeholder(R.drawable.ic_clinic)
+                        .error(R.drawable.ic_clinic)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(clinicBanner);
+            } else {
+                clinicBanner.setImageResource(R.drawable.ic_clinic); // fallback nếu null
+            }
 
             // Lấy giờ làm việc từ schedule đầu tiên (nếu có)
             String time = "N/A";

@@ -10,6 +10,8 @@
         android:orientation="vertical"
         android:paddingBottom="60dp">
 
+
+
         <!-- Back Button Header -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,6 +41,33 @@
                 android:textStyle="bold"
                 android:textColor="#000000"
                 android:gravity="center_vertical" />
+
+            <FrameLayout
+                android:id="@+id/cart_icon_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end">
+
+                <ImageView
+                    android:id="@+id/cart_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_cart"
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="Cart Icon" />
+
+                <TextView
+                    android:id="@+id/cart_badge"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/badge_background"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:visibility="gone" />
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -79,19 +108,18 @@
                 android:layout_marginTop="8dp"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chọn gói dịch vụ:"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn gói dịch vụ:"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    </RadioGroup>
+            <LinearLayout
+                android:id="@+id/service_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/btnXacNhan"

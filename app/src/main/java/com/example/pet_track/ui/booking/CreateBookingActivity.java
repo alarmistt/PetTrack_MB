@@ -7,11 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.pet_track.R;
 import com.example.pet_track.models.response.ServicePackage;
 import com.example.pet_track.models.response.Slot;
+import com.example.pet_track.ui.cart.CartActivity;
+import com.example.pet_track.utils.CartStorageHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ import java.util.Locale;
 public class CreateBookingActivity extends AppCompatActivity {
 
     private CalendarView calendarView;
-    private RadioGroup radioGroupServices;
+    private LinearLayout serviceListContainer;
     private GridLayout timeSlotGrid;
     private TextView dateTextView;
     private Button btnXacNhan;
@@ -40,12 +42,35 @@ public class CreateBookingActivity extends AppCompatActivity {
     private Button selectedSlotButton = null;
     private Slot selectedSlot = null;
     private List<ServicePackage> servicePackages = new ArrayList<>();
+    private List<ServicePackage> selectedPackages = new ArrayList<>();
     private Calendar selectedCalendar = Calendar.getInstance();
+    private ImageView cartIcon;
+    private TextView cartBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_booking);
+
+        cartIcon = findViewById(R.id.cart_icon);
+        cartBadge = findViewById(R.id.cart_badge);
+
+        selectedPackages = CartStorageHelper.getCart(this);
+        updateCartBadge();
+
+        cartIcon.setOnClickListener(v -> {
+            if (selectedPackages.isEmpty()) {
+                Toast.makeText(this, "Giỏ hàng đang trống.", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(CreateBookingActivity.this, CartActivity.class);
+                intent.putParcelableArrayListExtra("selectedServices", new ArrayList<>(selectedPackages));
+                // Gửi thông tin slot nếu cần
+                startActivity(intent);
+            }
+        });
+
+        // Cập nhật số lượng ban đầu
+        updateCartBadge();
 
         clinicId = getIntent().getStringExtra("clinicId");
         if (clinicId == null || clinicId.isEmpty()) {
@@ -58,7 +83,7 @@ public class CreateBookingActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         calendarView = findViewById(R.id.calendarView);
-        radioGroupServices = findViewById(R.id.radioGroup);
+        serviceListContainer = findViewById(R.id.service_list_container);
         timeSlotGrid = findViewById(R.id.time_slot_grid);
         dateTextView = findViewById(R.id.dateTextView);
         btnXacNhan = findViewById(R.id.btnXacNhan);
@@ -68,10 +93,8 @@ public class CreateBookingActivity extends AppCompatActivity {
         setupObservers();
         updateDateDisplay(selectedCalendar);
 
-        // Fetch initial data
         fetchSlotsForDate(selectedCalendar);
         bookingViewModel.getClinicDetails(clinicId);
-
 
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             selectedCalendar.set(year, month, dayOfMonth);
@@ -80,26 +103,21 @@ public class CreateBookingActivity extends AppCompatActivity {
         });
 
         btnXacNhan.setOnClickListener(v -> {
-            int selectedServiceId = radioGroupServices.getCheckedRadioButtonId();
-            if (selectedSlot == null || selectedServiceId == -1) {
-                Toast.makeText(CreateBookingActivity.this, "Vui lòng chọn khung giờ và gói dịch vụ.", Toast.LENGTH_SHORT).show();
+            if (selectedPackages.isEmpty()) {
+                Toast.makeText(this, "Chưa chọn gói dịch vụ nào.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Find selected service
-            int selectedIndex = radioGroupServices.indexOfChild(findViewById(selectedServiceId));
-            ServicePackage selectedService = servicePackages.get(selectedIndex);
+            Intent intent = new Intent(CreateBookingActivity.this, CartActivity.class);
+            intent.putParcelableArrayListExtra("selectedServices", new ArrayList<>(selectedPackages));
 
-            String note = ""; // Không có editNote nên sử dụng chuỗi rỗng
+            // Gửi thêm thông tin slot
+            String slotText = formatTimeToHHMM(selectedSlot.getStartTime()) + " - " + formatTimeToHHMM(selectedSlot.getEndTime());
+            long selectedTimeMillis = selectedCalendar.getTimeInMillis();
 
-            Intent intent = new Intent(CreateBookingActivity.this, PaymentBookingActivity.class);
-            intent.putExtra("serviceName", selectedService.getName());
-            intent.putExtra("servicePrice", selectedService.getPrice());
-            intent.putExtra("servicePackageId", selectedService.getId());
-            intent.putExtra("note", note);
-            intent.putExtra("date", selectedCalendar.getTimeInMillis());
-            intent.putExtra("slotText", selectedSlotButton.getText().toString());
-            intent.putExtra("slotId", selectedSlot.getId());
+            intent.putExtra("slotText", slotText);
+            intent.putExtra("slotDate", selectedTimeMillis);
+
             startActivity(intent);
         });
     }
@@ -142,29 +160,26 @@ public class CreateBookingActivity extends AppCompatActivity {
 
         for (Slot slot : slots) {
             Button slotButton = new Button(this);
-            
-            // Format thời gian chỉ hiển thị hh:mm
+
             String startTime = formatTimeToHHMM(slot.getStartTime());
             String endTime = formatTimeToHHMM(slot.getEndTime());
             String slotText = startTime + " - " + endTime;
             slotButton.setText(slotText);
-            
+
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 0;
             params.height = GridLayout.LayoutParams.WRAP_CONTENT;
             params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
             params.setMargins(8, 8, 8, 8);
             slotButton.setLayoutParams(params);
-            
-            // Đặt background và trạng thái dựa trên status
+
             boolean isActive = slot.getStatus() != null && slot.getStatus().equalsIgnoreCase("Active");
-            
+
             if (isActive) {
-                // Slot active - màu trắng, có thể chọn
                 slotButton.setBackgroundResource(R.drawable.slot_button_background);
                 slotButton.setTextColor(Color.BLACK);
                 slotButton.setEnabled(true);
-                
+
                 slotButton.setOnClickListener(v -> {
                     if (selectedSlotButton != null) {
                         selectedSlotButton.setBackgroundResource(R.drawable.slot_button_background);
@@ -175,7 +190,6 @@ public class CreateBookingActivity extends AppCompatActivity {
                     selectedSlotButton = slotButton;
                     selectedSlot = slot;
 
-                    // Combine selected date with slot time
                     if (selectedSlot != null && selectedSlot.getStartTime() != null) {
                         try {
                             String[] timeParts = selectedSlot.getStartTime().split(":");
@@ -191,38 +205,68 @@ public class CreateBookingActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                // Slot inactive - màu xám, không thể chọn
                 slotButton.setBackgroundResource(R.drawable.slot_button_inactive_background);
                 slotButton.setTextColor(Color.BLACK);
                 slotButton.setEnabled(false);
             }
-            
+
             timeSlotGrid.addView(slotButton);
         }
     }
 
-    // Helper method để format thời gian từ HH:mm:ss thành HH:mm
     private String formatTimeToHHMM(String time) {
         if (time == null || time.isEmpty()) {
             return "";
         }
-        
-        // Nếu thời gian có format HH:mm:ss, chỉ lấy HH:mm
         if (time.length() >= 5) {
             return time.substring(0, 5);
         }
-        
         return time;
     }
 
     private void updateServicesUI(List<ServicePackage> servicePackages) {
-        radioGroupServices.removeAllViews();
+        List<ServicePackage> savedCart = CartStorageHelper.getCart(this);
+        selectedPackages.clear();
+        selectedPackages.addAll(savedCart);
+
+        serviceListContainer.removeAllViews(); // chỉ xoá UI, không xoá data
+
         for (ServicePackage service : servicePackages) {
-            RadioButton radioButton = new RadioButton(this);
-            String serviceText = service.getName() + " - " + String.format(Locale.GERMAN, "%,.0f", service.getPrice()) + " VND";
-            radioButton.setText(serviceText);
-            radioButton.setId(View.generateViewId());
-            radioGroupServices.addView(radioButton);
+            CheckBox checkBox = new CheckBox(this);
+            String serviceText = service.getName() + " - " + String.format(Locale.GERMANY, "%,.0f", service.getPrice()) + " VND";
+            checkBox.setText(serviceText);
+            checkBox.setTextColor(Color.BLACK);
+
+            // Nếu gói này đã có trong cart → tick lại
+            for (ServicePackage selected : selectedPackages) {
+                if (selected.getId().equals(service.getId())) {
+                    checkBox.setChecked(true);
+                    break;
+                }
+            }
+
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    selectedPackages.add(service);
+                } else {
+                    selectedPackages.removeIf(p -> p.getId().equals(service.getId()));
+                }
+                updateCartBadge();
+                CartStorageHelper.saveCart(this, selectedPackages); // luôn lưu lại sau khi thay đổi
+            });
+
+            serviceListContainer.addView(checkBox);
         }
     }
-} 
+
+
+    private void updateCartBadge() {
+        int count = selectedPackages.size();
+        if (count > 0) {
+            cartBadge.setVisibility(View.VISIBLE);
+            cartBadge.setText(String.valueOf(count));
+        } else {
+            cartBadge.setVisibility(View.GONE);
+        }
+    }
+}

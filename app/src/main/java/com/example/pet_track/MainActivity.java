@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_chat) {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
             Bundle args = new Bundle();
-            args.putString("clinicId", "5f8dc6e7d9674788ac4a00c653388917"); // đang hard code clinicId, cần lấy từ dữ liệu người dùng mới đúng
+            args.putString("clinicId", "user8"); // đang hard code clinicId, cần lấy từ dữ liệu người dùng mới đúng
             navController.navigate(R.id.nav_chat, args);
             return true;
         }
