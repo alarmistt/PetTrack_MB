@@ -19,14 +19,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pet_track.R;
+import com.example.pet_track.api.ApiClient;
+import com.example.pet_track.api.ApiService;
+import com.example.pet_track.models.response.BookingHistoryResponse;
+import com.example.pet_track.models.response.PagingResponse;
 import com.example.pet_track.models.response.ServicePackage;
 import com.example.pet_track.models.response.Slot;
+import com.example.pet_track.models.response.WrapResponse;
+import com.example.pet_track.ui.cart.CartActivity;
+import com.example.pet_track.utils.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreateBookingActivity extends AppCompatActivity {
 
@@ -42,7 +53,8 @@ public class CreateBookingActivity extends AppCompatActivity {
     private Slot selectedSlot = null;
     private List<ServicePackage> servicePackages = new ArrayList<>();
     private Calendar selectedCalendar = Calendar.getInstance();
-    private ImageView btnCart;
+    private ImageView iconCart;
+    private TextView cartBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +68,16 @@ public class CreateBookingActivity extends AppCompatActivity {
             return;
         }
 
-        btnCart = findViewById(R.id.icon_cart_booking);
+        iconCart = findViewById(R.id.icon_cart_booking);
+        cartBadge = findViewById(R.id.cart_badge);
+        updateCartBadge();
+
+        iconCart.setOnClickListener(v -> {
+            Intent intent = new Intent(CreateBookingActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
+
+
         ImageView btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
 
@@ -127,6 +148,7 @@ public class CreateBookingActivity extends AppCompatActivity {
             bookingViewModel.createBooking(CreateBookingActivity.this, selectedSlot.getId(), selectedService.getId(), apiDate,
                     () -> {
                         Toast.makeText(this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                        updateCartBadge();
                     },
                     error -> {
                         Toast.makeText(this, "Thêm vào giỏ hàng thất bại: " + error, Toast.LENGTH_SHORT).show();
@@ -256,5 +278,44 @@ public class CreateBookingActivity extends AppCompatActivity {
             radioButton.setId(View.generateViewId());
             radioGroupServices.addView(radioButton);
         }
+    }
+
+    private void updateCartBadge() {
+        String userId = SharedPreferencesManager.getInstance(this).getUserId();
+        String token = SharedPreferencesManager.getInstance(this).getToken();
+
+        if (userId == null || token == null) {
+            cartBadge.setVisibility(View.GONE);
+            return;
+        }
+
+        ApiService apiService = ApiClient.getAuthenticatedClient(token).create(ApiService.class);
+        apiService.getBookings(1, 100, null, userId, "Pending").enqueue(new Callback<WrapResponse<PagingResponse<BookingHistoryResponse>>>() {
+            @Override
+            public void onResponse(Call<WrapResponse<PagingResponse<BookingHistoryResponse>>> call,
+                                   Response<WrapResponse<PagingResponse<BookingHistoryResponse>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    int count = response.body().getData().getItems().size();
+                    Log.d("CartBadge", "Pending count = " + count);
+                    if (count > 0) {
+                        cartBadge.setText(String.valueOf(count));
+                        cartBadge.setVisibility(View.VISIBLE);
+                    } else {
+                        cartBadge.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WrapResponse<PagingResponse<BookingHistoryResponse>>> call, Throwable t) {
+                cartBadge.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartBadge();
     }
 }

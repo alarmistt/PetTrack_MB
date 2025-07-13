@@ -1,6 +1,7 @@
 package com.example.pet_track.models.response;
 
 public class BookingHistoryResponse {
+    private String id;
     private String userId;
     private String fullName;
     private String clinicId;
@@ -11,6 +12,7 @@ public class BookingHistoryResponse {
     private String status;
     private int price;
     private String createdTime;
+    public  String getId() { return id; }
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 

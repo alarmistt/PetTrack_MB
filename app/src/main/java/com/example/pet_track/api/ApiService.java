@@ -52,7 +52,7 @@ public interface ApiService {
             @Query("status") String status
     );
     @POST("/api/Payment/check-status-transaction")
-    Call<WrapResponse<PagingNotiResponse>> checkStatusTransaction(@Query("orderCode") String orderCode);
+    Call<WrapResponse<PagingResponse<String>>> checkStatusTransaction(@Query("orderCode") String orderCode);
     @GET("api/Booking")
     Call<WrapResponse<PagingResponse<BookingHistoryResponse>>> getBookings(
             @Query("pageIndex") int pageIndex,
