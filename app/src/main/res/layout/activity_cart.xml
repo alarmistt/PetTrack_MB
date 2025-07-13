@@ -1,39 +1,44 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:text="Sản phẩm đã chọn"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!-- ❗ Đây là view bị thiếu hoặc ID sai -->
+    <!-- Chỉ 1 con trực tiếp -->
     <LinearLayout
-        android:id="@+id/cart_items_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/total_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tổng: 0 VND"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
+        <TextView
+            android:text="Sản phẩm đã chọn"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_checkout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Thanh toán"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/design_default_color_primary"
-        android:textColor="#FFFFFF" />
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/cart_items_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/total_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tổng: 0 VND"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <Button
+            android:id="@+id/btn_checkout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/design_default_color_primary"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+</ScrollView>
