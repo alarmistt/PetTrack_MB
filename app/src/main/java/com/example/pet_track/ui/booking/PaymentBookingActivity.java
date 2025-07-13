@@ -42,7 +42,7 @@ public class PaymentBookingActivity extends AppCompatActivity {
         String serviceName = getIntent().getStringExtra("serviceName");
         double servicePrice = getIntent().getDoubleExtra("servicePrice", 0);
         String note = getIntent().getStringExtra("note");
-        long dateInMillis = getIntent().getLongExtra("date", 0);
+        long dateInMillis = getIntent().getLongExtra("slotDate", 0);
         String slotText = getIntent().getStringExtra("slotText");
 
         // Get IDs for API call
