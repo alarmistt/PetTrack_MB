@@ -30,6 +30,7 @@ import com.example.pet_track.models.response.ClinicResponse;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -62,6 +63,10 @@ public interface ApiService {
     );
     @POST("api/Payment/create-booking-payment")
     Call<WrapResponse<CreatePaymentResult>> createBookingPayment(@Body CreateLinkBookingRequest createPaymentRequest);
+
+    /// hàm mà cần
+    @DELETE("api/Booking/{id}")
+    Call<WrapResponse<String>> deleteBooking(@Path("id") String bookingId);
     @GET("api/public/clinics/approved")
     Call<WrapResponse<List<ClinicResponse>>> getApprovedClinics();
     @POST("api/Payment/create-payment-intent")
