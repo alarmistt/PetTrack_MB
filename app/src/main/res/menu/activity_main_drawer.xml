@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="@string/menu_wallet" />
+        <item
+            android:id="@+id/profile"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Hồ sơ cá nhân" />
+        <item
+            android:id="@+id/nav_test_booking_payment"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Kiểm tra thanh toán đặt lịch" />
+    </group>
+
+    <item android:title="Khác">
+        <menu>
+            <item
+                android:id="@+id/nav_booking_history"
+                android:icon="@android:drawable/arrow_down_float"
+                android:title="Lịch sử đặt lịch" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
+</menu>

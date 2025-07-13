@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F9FB">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Cá nhân"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginRight="60dp"/>
+        </LinearLayout>
+
+        <!-- Avatar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/avatarImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                android:background="@drawable/camera" />
+
+            <ImageView
+                android:id="@+id/editAvatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/camera"
+                android:layout_alignBottom="@id/avatarImage"
+                android:layout_alignEnd="@id/avatarImage"
+                android:background="@color/cardview_light_background"
+                android:padding="6dp" />
+        </RelativeLayout>
+
+        <!-- Tên -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên:"
+            android:textColor="#555"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/nameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên người dùng"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:padding="10dp"
+            android:background="@color/cardview_light_background"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Số điện thoại -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại:"
+            android:textColor="#555"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/phoneEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0123456789"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:padding="10dp"
+            android:background="@color/cardview_light_background"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Địa chỉ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ:"
+            android:textColor="#555"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/addressEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ người dùng"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:padding="10dp"
+            android:background="@color/cardview_light_background"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Nút cập nhật -->
+        <Button
+            android:id="@+id/btnUpdateProfile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="CẬP NHẬT HỒ SƠ"
+            android:backgroundTint="#3D6EF7"
+            android:textColor="#fff"
+            android:layout_marginTop="12dp" />
+    </LinearLayout>
+</ScrollView>

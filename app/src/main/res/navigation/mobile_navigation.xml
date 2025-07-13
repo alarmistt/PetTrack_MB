@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.pet_track.ui.booking.ClinicListFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_booking" />
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.example.pet_track.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.example.pet_track.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.example.pet_track.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="clinicId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_booking_history"
+        android:name="com.example.pet_track.ui.home.BookingHistoryFragment"
+        android:label="Lịch sử đặt lịch"
+        tools:layout="@layout/activity_history" />
+
+    <fragment
+        android:id="@+id/nav_test_booking_payment"
+        android:name="com.example.pet_track.ui.wallet.TestBookingPaymentFragment"
+        android:label="Test Booking Payment" />
+    <fragment
+        android:id="@+id/bookingPaymentFragment"
+        android:name="com.example.pet_track.ui.wallet.BookingPaymentFragment"
+        android:label="Thanh toán Booking"
+        tools:layout="@layout/fragment_booking_payment" />
+    <!-- res/navigation/nav_graph.xml -->
+    <fragment
+        android:id="@+id/nav_wallet"
+        android:name="com.example.pet_track.ui.wallet.WalletFragment"
+        android:label="Wallet" />
+</navigation>
