@@ -58,6 +58,23 @@ public class CreateBookingActivity extends AppCompatActivity {
         cartBadge = findViewById(R.id.cart_badge);
 
         userId = SharedPreferencesManager.getInstance(this).getUserId();
+
+        clinicId = getIntent().getStringExtra("clinicId");
+        if (clinicId == null || clinicId.isEmpty()) {
+            Toast.makeText(this, "Clinic ID is missing.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // ✅ Phải kiểm tra và reset cart TRƯỚC KHI gọi getCart
+        String lastClinicId = SharedPreferencesManager.getInstance(this).getLastClinicId();
+        if (lastClinicId != null && !lastClinicId.equals(clinicId)) {
+            CartStorageHelper.clearCart(this, userId); // clear cart
+            selectedPackages.clear();                  // clear RAM
+        }
+        SharedPreferencesManager.getInstance(this).setLastClinicId(clinicId);
+
+        // ✅ Sau khi xử lý xong, mới get lại cart (sẽ là rỗng nếu vừa clear)
         selectedPackages = CartStorageHelper.getCart(this, userId);
         updateCartBadge();
 
@@ -79,16 +96,6 @@ public class CreateBookingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // Cập nhật số lượng ban đầu
-        updateCartBadge();
-
-        clinicId = getIntent().getStringExtra("clinicId");
-        if (clinicId == null || clinicId.isEmpty()) {
-            Toast.makeText(this, "Clinic ID is missing.", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
 
         ImageView btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish());
@@ -122,7 +129,6 @@ public class CreateBookingActivity extends AppCompatActivity {
             Intent intent = new Intent(CreateBookingActivity.this, CartActivity.class);
             intent.putParcelableArrayListExtra("selectedServices", new ArrayList<>(selectedPackages));
 
-            // Gửi thêm thông tin slot
             String slotText = formatTimeToHHMM(selectedSlot.getStartTime()) + " - " + formatTimeToHHMM(selectedSlot.getEndTime());
             long selectedTimeMillis = selectedCalendar.getTimeInMillis();
 
@@ -272,14 +278,9 @@ public class CreateBookingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Cập nhật cart từ bộ nhớ
         selectedPackages.clear();
         selectedPackages = CartStorageHelper.getCart(this, userId);
-
-        // Cập nhật badge
         updateCartBadge();
-
-        // Cập nhật lại checkbox UI
         updateServicesUI(this.servicePackages);
     }
 

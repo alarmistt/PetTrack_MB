@@ -35,7 +35,13 @@ public class SharedPreferencesManager {
     public String getToken() {
         return preferences.getString(KEY_TOKEN, null);
     }
+    public void setLastClinicId(String clinicId) {
+        preferences.edit().putString("last_clinic_id", clinicId).apply();
+    }
 
+    public String getLastClinicId() {
+        return preferences.getString("last_clinic_id", null);
+    }
     public void clear() {
         preferences.edit().clear().apply();
     }
