@@ -23,6 +23,7 @@ import com.example.pet_track.models.response.ServicePackage;
 import com.example.pet_track.models.response.Slot;
 import com.example.pet_track.ui.cart.CartActivity;
 import com.example.pet_track.utils.CartStorageHelper;
+import com.example.pet_track.utils.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class CreateBookingActivity extends AppCompatActivity {
     private Calendar selectedCalendar = Calendar.getInstance();
     private ImageView cartIcon;
     private TextView cartBadge;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +57,25 @@ public class CreateBookingActivity extends AppCompatActivity {
         cartIcon = findViewById(R.id.cart_icon);
         cartBadge = findViewById(R.id.cart_badge);
 
-        selectedPackages = CartStorageHelper.getCart(this);
+        userId = SharedPreferencesManager.getInstance(this).getUserId();
+        selectedPackages = CartStorageHelper.getCart(this, userId);
         updateCartBadge();
 
         cartIcon.setOnClickListener(v -> {
             if (selectedPackages.isEmpty()) {
                 Toast.makeText(this, "Giỏ hàng đang trống.", Toast.LENGTH_SHORT).show();
+            } else if (selectedSlot == null) {
+                Toast.makeText(this, "Vui lòng chọn khung giờ trước khi xem giỏ hàng.", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(CreateBookingActivity.this, CartActivity.class);
                 intent.putParcelableArrayListExtra("selectedServices", new ArrayList<>(selectedPackages));
-                // Gửi thông tin slot nếu cần
+
+                String slotText = formatTimeToHHMM(selectedSlot.getStartTime()) + " - " + formatTimeToHHMM(selectedSlot.getEndTime());
+                long selectedTimeMillis = selectedCalendar.getTimeInMillis();
+
+                intent.putExtra("slotText", slotText);
+                intent.putExtra("slotDate", selectedTimeMillis);
+
                 startActivity(intent);
             }
         });
@@ -225,11 +236,7 @@ public class CreateBookingActivity extends AppCompatActivity {
     }
 
     private void updateServicesUI(List<ServicePackage> servicePackages) {
-        List<ServicePackage> savedCart = CartStorageHelper.getCart(this);
-        selectedPackages.clear();
-        selectedPackages.addAll(savedCart);
-
-        serviceListContainer.removeAllViews(); // chỉ xoá UI, không xoá data
+        serviceListContainer.removeAllViews(); // xoá UI cũ
 
         for (ServicePackage service : servicePackages) {
             CheckBox checkBox = new CheckBox(this);
@@ -238,27 +245,43 @@ public class CreateBookingActivity extends AppCompatActivity {
             checkBox.setTextColor(Color.BLACK);
 
             // Nếu gói này đã có trong cart → tick lại
+            boolean isChecked = false;
             for (ServicePackage selected : selectedPackages) {
                 if (selected.getId().equals(service.getId())) {
-                    checkBox.setChecked(true);
+                    isChecked = true;
                     break;
                 }
             }
+            checkBox.setChecked(isChecked);
 
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked1) -> {
+                if (isChecked1) {
                     selectedPackages.add(service);
                 } else {
                     selectedPackages.removeIf(p -> p.getId().equals(service.getId()));
                 }
                 updateCartBadge();
-                CartStorageHelper.saveCart(this, selectedPackages); // luôn lưu lại sau khi thay đổi
+                CartStorageHelper.saveCart(this, userId, selectedPackages);
             });
 
             serviceListContainer.addView(checkBox);
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Cập nhật cart từ bộ nhớ
+        selectedPackages.clear();
+        selectedPackages = CartStorageHelper.getCart(this, userId);
+
+        // Cập nhật badge
+        updateCartBadge();
+
+        // Cập nhật lại checkbox UI
+        updateServicesUI(this.servicePackages);
+    }
 
     private void updateCartBadge() {
         int count = selectedPackages.size();

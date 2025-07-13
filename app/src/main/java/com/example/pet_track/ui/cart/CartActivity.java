@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pet_track.R;
 import com.example.pet_track.models.response.ServicePackage;
 import com.example.pet_track.ui.booking.PaymentBookingActivity;
+import com.example.pet_track.utils.CartStorageHelper;
+import com.example.pet_track.utils.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +28,6 @@ public class CartActivity extends AppCompatActivity {
     private TextView totalPriceText;
     private Button btnCheckout;
     private double totalPrice = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,16 +57,29 @@ public class CartActivity extends AppCompatActivity {
 
         btnCheckout.setOnClickListener(v -> {
             if (!cartItems.isEmpty()) {
-                // Mô phỏng đi tiếp đến màn hình thanh toán
-                ServicePackage firstItem = cartItems.get(0); // chỉ lấy 1 cái
+                // Lấy 1 gói đầu tiên
+                ServicePackage firstItem = cartItems.get(0);
+
+                // Cập nhật lại cart → chỉ giữ lại 1 sản phẩm đầu tiên
+                cartItems.clear();
+                cartItems.add(firstItem);
+
+                // Lưu lại giỏ hàng đã bị rút gọn
+                String userId = SharedPreferencesManager.getInstance(this).getUserId();
+                CartStorageHelper.saveCart(this, userId, cartItems);
+
+                // Điều hướng sang PaymentActivity
                 Intent intent = new Intent(CartActivity.this, PaymentBookingActivity.class);
                 intent.putExtra("serviceName", firstItem.getName());
                 intent.putExtra("servicePrice", firstItem.getPrice());
                 intent.putExtra("servicePackageId", firstItem.getId());
                 intent.putExtra("note", "Sản phẩm từ giỏ hàng");
-                intent.putExtra("date", System.currentTimeMillis());
-                intent.putExtra("slotText", "09:00 - 10:00");
-                intent.putExtra("slotId", "mock-slot-123");
+
+                // Gửi lại thông tin slot (nếu bạn truyền từ trước)
+                intent.putExtra("slotText", getIntent().getStringExtra("slotText"));
+                intent.putExtra("slotDate", getIntent().getLongExtra("slotDate", -1));
+                intent.putExtra("slotId", "mock-slot-123"); // Tuỳ backend
+
                 startActivity(intent);
             }
         });
@@ -112,6 +126,10 @@ public class CartActivity extends AppCompatActivity {
             cartItemsContainer.removeView(horizontalLayout);
             totalPrice -= item.getPrice();
             updateTotalPrice();
+
+            // Cập nhật lại cart sau khi xoá
+            String userId = SharedPreferencesManager.getInstance(this).getUserId();
+            CartStorageHelper.saveCart(this, userId, cartItems);
         });
 
         horizontalLayout.addView(deleteIcon);

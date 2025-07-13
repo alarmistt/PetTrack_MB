@@ -15,29 +15,24 @@ public class CartStorageHelper {
     private static final String PREF_NAME = "CartPrefs";
     private static final String KEY_CART = "cart_items";
 
-    public static void saveCart(Context context, List<ServicePackage> cartItems) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
+    public static void saveCart(Context context, String userId, List<ServicePackage> cart) {
+        SharedPreferences prefs = context.getSharedPreferences("CartStorage", Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = gson.toJson(cartItems);
-        editor.putString(KEY_CART, json);
-        editor.apply();
+        prefs.edit().putString("cart_" + userId, gson.toJson(cart)).apply();
     }
 
-    public static List<ServicePackage> getCart(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String json = prefs.getString(KEY_CART, null);
-
-        if (json != null) {
+    public static List<ServicePackage> getCart(Context context, String userId) {
+        SharedPreferences prefs = context.getSharedPreferences("CartStorage", Context.MODE_PRIVATE);
+        String cartJson = prefs.getString("cart_" + userId, null);
+        if (cartJson != null) {
             Type type = new TypeToken<List<ServicePackage>>() {}.getType();
-            return new Gson().fromJson(json, type);
+            return new Gson().fromJson(cartJson, type);
         }
         return new ArrayList<>();
     }
 
-    public static void clearCart(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().remove(KEY_CART).apply();
+    public static void clearCart(Context context, String userId) {
+        SharedPreferences prefs = context.getSharedPreferences("CartStorage", Context.MODE_PRIVATE);
+        prefs.edit().remove("cart_" + userId).apply();
     }
 }
