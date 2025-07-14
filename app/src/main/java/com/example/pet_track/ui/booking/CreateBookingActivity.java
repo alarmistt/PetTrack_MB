@@ -139,9 +139,23 @@ public class CreateBookingActivity extends AppCompatActivity {
             int selectedIndex = radioGroupServices.indexOfChild(findViewById(selectedServiceId));
             ServicePackage selectedService = servicePackages.get(selectedIndex);
 
+            // 👉 Cập nhật giờ từ selectedSlot vào selectedCalendar
+            if (selectedSlot != null && selectedSlot.getStartTime() != null) {
+                try {
+                    String[] timeParts = selectedSlot.getStartTime().split(":");
+                    int hour = Integer.parseInt(timeParts[0]);
+                    int minute = Integer.parseInt(timeParts[1]);
+                    selectedCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                    selectedCalendar.set(Calendar.MINUTE, minute);
+                    selectedCalendar.set(Calendar.SECOND, 0);
+                    selectedCalendar.set(Calendar.MILLISECOND, 0);
+                } catch (Exception e) {
+                    Log.e("CreateBookingActivity", "Could not parse slot time for saving", e);
+                }
+            }
+
             // Format ngày cho API
             SimpleDateFormat apiSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-            apiSdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
             String apiDate = apiSdf.format(selectedCalendar.getTime());
 
             // Gửi request
