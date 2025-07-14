@@ -1,39 +1,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="12dp"
     android:background="@android:color/white"
     android:layout_marginBottom="12dp"
     android:elevation="2dp">
 
-    <TextView
-        android:id="@+id/service_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Tên dịch vụ"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/clinic_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tên phòng khám"
-        android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/service_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên dịch vụ"
+            android:textStyle="bold"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/booking_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ngày hẹn"
-        android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/clinic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên phòng khám"
+            android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/booking_price"
+        <TextView
+            android:id="@+id/booking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày hẹn"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/booking_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_delete_booking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Giá"
-        android:textStyle="bold"
-        android:layout_marginTop="4dp"/>
+        android:src="@android:drawable/ic_delete"
+        android:contentDescription="Xoá booking"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_gravity="center_vertical"
+        />
 </LinearLayout>

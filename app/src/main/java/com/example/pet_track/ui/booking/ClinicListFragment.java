@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.pet_track.R;
 import com.example.pet_track.models.response.ClinicResponse;
 import com.example.pet_track.ui.profile.ProfileActivity;
+import com.example.pet_track.utils.HeaderHelper;
 import com.example.pet_track.utils.SharedPreferencesManager;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class ClinicListFragment extends Fragment {
 
     private ClinicListViewModel clinicListViewModel;
     private LinearLayout clinicsContainer;
+    private TextView cartBadge;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,7 +57,18 @@ public class ClinicListFragment extends Fragment {
             if (error != null) Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
         });
 
+        cartBadge = rootView.findViewById(R.id.cart_badge);
+        HeaderHelper.setupCartHeader(rootView, requireContext());
+
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (cartBadge != null) {
+            HeaderHelper.updateCartBadge(cartBadge, requireContext()); // ✅ cập nhật lại khi fragment resume
+        }
     }
 
     private void displayClinics(List<ClinicResponse> clinics) {

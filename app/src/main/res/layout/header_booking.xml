@@ -26,14 +26,34 @@
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium" />
 
-        <ImageView
-            android:id="@+id/icon_cart"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_cart"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:contentDescription="Cart icon" />
+        <FrameLayout
+            android:id="@+id/cart_icon_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/icon_cart"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cart"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:contentDescription="Cart icon" />
+
+            <TextView
+                android:id="@+id/cart_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:background="@drawable/badge_background"
+                android:text="3"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:padding="3dp"
+                android:minWidth="20dp"
+                android:gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
     </LinearLayout>
 
     <!-- Quick Actions Row -->
