@@ -92,16 +92,7 @@ public class ClinicListFragment extends Fragment {
             clinicName.setText(clinic.getName());
             clinicAddress.setText(clinic.getAddress());
             clinicPhone.setText(clinic.getPhoneNumber());
-            btnViewMap.setOnClickListener(v -> {
-                String address = clinic.getAddress();
-                if (!address.isEmpty()) {
-                    try {
-                        String encodedAddress = Uri.encode(address);
-                        String mapUri = "geo:0,0?q=" + encodedAddress;
 
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
-
-            // Set ảnh banner nếu có, nếu không thì để ảnh mặc định
             Log.d("BannerDebug", "URL: " + clinic.getBannerUrl());
 
             if (clinic.getBannerUrl() != null && !clinic.getBannerUrl().isEmpty()) {
@@ -114,6 +105,18 @@ public class ClinicListFragment extends Fragment {
             } else {
                 clinicBanner.setImageResource(R.drawable.ic_clinic); // fallback nếu null
             }
+
+            btnViewMap.setOnClickListener(v -> {
+                String address = clinic.getAddress();
+                if (!address.isEmpty()) {
+                    try {
+                        String encodedAddress = Uri.encode(address);
+                        String mapUri = "geo:0,0?q=" + encodedAddress;
+
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
+
+            // Set ảnh banner nếu có, nếu không thì để ảnh mặc định
+
 
                         // Sử dụng Intent Chooser để hiển thị tất cả ứng dụng có thể xử lý
                         Intent chooser = Intent.createChooser(mapIntent, "Chọn ứng dụng bản đồ");

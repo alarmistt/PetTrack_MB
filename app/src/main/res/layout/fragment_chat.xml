@@ -23,12 +23,12 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Type a message..." />
+            android:hint="Nhập tin nhắn..." />
 
         <Button
             android:id="@+id/buttonSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send" />
+            android:text="Gửi" />
     </LinearLayout>
 </LinearLayout>
