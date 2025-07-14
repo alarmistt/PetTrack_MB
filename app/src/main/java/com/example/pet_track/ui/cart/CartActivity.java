@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,16 +113,43 @@ public class CartActivity extends AppCompatActivity {
             TextView clinicName = itemView.findViewById(R.id.clinic_name);
             TextView date = itemView.findViewById(R.id.booking_date);
             TextView price = itemView.findViewById(R.id.booking_price);
+            ImageButton btnDelete = itemView.findViewById(R.id.btn_delete_booking);
 
             serviceName.setText(booking.getServicePackageName());
             clinicName.setText("Tại: " + booking.getClinicName());
             date.setText("Ngày: " + booking.getAppointmentDate());
             price.setText(String.format(Locale.GERMAN, "%,.0f VND", (double) booking.getPrice()));
 
+            btnDelete.setOnClickListener(v -> {
+                deleteBookingById(booking.getId());
+            });
+
             total = total.add(BigDecimal.valueOf(booking.getPrice()));
             cartItemsContainer.addView(itemView);
         }
         totalAmount = total.intValue(); // Lưu tổng số tiền để sử dụng sau này
         totalPriceText.setText(String.format(Locale.GERMAN, "Tổng: %,.0f VND", total));
+    }
+
+    private void deleteBookingById(String bookingId) {
+        String token = SharedPreferencesManager.getInstance(this).getToken();
+
+        ApiService apiService = ApiClient.getAuthenticatedClient(token).create(ApiService.class);
+        apiService.deleteBooking(bookingId).enqueue(new Callback<WrapResponse<String>>() {
+            @Override
+            public void onResponse(Call<WrapResponse<String>> call, Response<WrapResponse<String>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(CartActivity.this, "Đã xoá booking", Toast.LENGTH_SHORT).show();
+                    fetchPendingBookings(); // 🔄 Reload lại danh sách
+                } else {
+                    Toast.makeText(CartActivity.this, "Xoá không thành công", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WrapResponse<String>> call, Throwable t) {
+                Toast.makeText(CartActivity.this, "Lỗi xoá booking: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
